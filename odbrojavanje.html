@@ -148,11 +148,11 @@
   .err { margin: -4px 0 0; min-height: 1.4em; text-align: center; color: var(--deep); font-weight: 500; font-size: 15px; }
   .actions { display: flex; gap: 10px; flex-wrap: wrap; }
   .actions .btn { flex: 1 1 auto; }
-  .share { background: #fff; border: 2px dashed #ffc0dc; border-radius: 20px; padding: 14px; display: flex; flex-direction: column; gap: 8px; text-align: left; }
-  .share p { margin: 0; font-size: 15px; }
-  .share-row { display: flex; gap: 8px; }
-  .share-row input { flex: 1; min-width: 0; font: 400 14px var(--body); color: var(--ink-soft); border: 2px solid #ffd0e4; border-radius: 12px; padding: 8px 10px; background: #fffafc; }
-  .share-row .btn { min-height: 42px; padding: 8px 16px; font-size: 15px; }
+  .err.ok { color: #2f8f5b; }
+  .btn[disabled] { opacity: .6; pointer-events: none; }
+  .steps { margin: 0; padding: 14px 14px 14px 34px; background: #fff; border: 2px dashed #ffc0dc; border-radius: 20px; font-size: 15px; line-height: 1.5; text-align: left; display: flex; flex-direction: column; gap: 4px; }
+  .steps b { font-weight: 600; }
+  .steps a { font-weight: 600; }
 </style>
 </head>
 <body data-state="none">
@@ -253,7 +253,7 @@
     <p class="hint">samo za onog ko zna lozinku ♡</p>
     <label class="field"><span>Lozinka</span><input type="password" id="pw" autocomplete="current-password"></label>
     <p class="err" id="pwErr" role="alert"></p>
-    <button class="btn" type="submit">Otkljucaj ♡</button>
+    <button class="btn" type="submit" id="unlockBtn">Otkljucaj ♡</button>
   </form>
   <form class="pane" id="dateForm" hidden novalidate>
     <h3>Kad se vidimo?</h3>
@@ -265,13 +265,26 @@
     <label class="field"><span>Tajno pismo, otvara se tek na dan susreta (nije obavezno)</span><textarea id="fLetter" rows="3" maxlength="600" placeholder="nesto slatko..."></textarea></label>
     <p class="err" id="dateErr" role="alert"></p>
     <div class="actions">
-      <button class="btn" type="submit">Sacuvaj ♡</button>
+      <button class="btn" type="submit" id="saveBtn">Sacuvaj za oboje ♡</button>
       <button class="btn ghost" type="button" id="clearBtn">Obrisi datum</button>
     </div>
-    <div class="share" id="share" hidden>
-      <p><b>Sacuvano!</b> Posalji joj ovaj link da i ona vidi isto odbrojavanje:</p>
-      <div class="share-row"><input id="shareUrl" readonly aria-label="Link za dijeljenje"><button type="button" class="btn" id="copyBtn">Kopiraj</button></div>
-    </div>
+    <p class="hint" style="text-align:center">datum se cuva za sve: cim ga sacuvas, vidi ga i Irena</p>
+  </form>
+
+  <form class="pane" id="connectForm" hidden novalidate>
+    <h3>Jos samo jednom</h3>
+    <p class="hint">Povezi sajt sa GitHubom da datum vidimo oboje. Ovo radis samo prvi put.</p>
+    <ol class="steps">
+      <li>Otvori <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub → novi token</a></li>
+      <li><b>Token name:</b> za-irenu, <b>Expiration:</b> najduze sto nudi</li>
+      <li><b>Repository access:</b> Only select repositories → <b>za-irenu</b></li>
+      <li><b>Permissions → Contents:</b> Read and write</li>
+      <li><b>Generate token</b>, kopiraj ga i zalijepi ovdje</li>
+    </ol>
+    <label class="field"><span>Token</span><input type="password" id="token" autocomplete="off" spellcheck="false" placeholder="github_pat_..."></label>
+    <p class="err" id="connectErr" role="alert"></p>
+    <button class="btn" type="submit" id="connectBtn">Povezi ♡</button>
+    <p class="hint">Token se cuva zakljucan ovom lozinkom, pa ga vise ne moras unositi ni na jednom telefonu.</p>
   </form>
 </dialog>
 
@@ -285,12 +298,15 @@
   window.hashLozinke = s => { const h = hashPw(s); console.log('ADMIN_HASH =', h); return h; };
 
   let state = await K.meeting();
-  const persist = () => {
-    K.saveMeeting(state);
-    const url = state.t ? K.meetingHash(state) : location.pathname + location.search;
-    try { history.replaceState(null, '', url); } catch { if (state.t) location.hash = url; }
-  };
-  addEventListener('hashchange', async () => { state = await K.meeting(); envelopeOpen = false; render(true); });
+  // pick up a date the other person just saved: every 3 minutes and whenever the page comes back into view
+  const same = (a, b) => a.t === b.t && a.p === b.p && a.l === b.l;
+  async function refresh() {
+    if (document.hidden || $('admin').open) return;
+    const fresh = await K.meeting();
+    if (!same(fresh, state)) { state = fresh; envelopeOpen = false; render(true); }
+  }
+  setInterval(refresh, 3 * 60e3);
+  if (location.hash) try { history.replaceState(null, '', location.pathname); } catch {}
 
   // ---------- road ----------
   const road = $('roadPath'), L = road.getTotalLength();
@@ -414,7 +430,7 @@
 
   let timer = 0;
   function tick() { render(); clearTimeout(timer); timer = setTimeout(tick, 1000 - (Date.now() % 1000) + 10); }
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) tick(); });
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) { tick(); refresh(); } });
 
   // ---------- envelope ----------
   $('envelope').addEventListener('click', e => {
@@ -432,75 +448,141 @@
       : 'ne jos! ♡';
   });
 
-  // ---------- secret corner ----------
-  const dlg = $('admin'), lockForm = $('lockForm'), dateForm = $('dateForm');
-  let unlocked = false;
-  try { unlocked = sessionStorage.getItem('irena-kutak') === '1'; } catch {}
-  function showShare(on) { $('share').hidden = !on; if (on) $('shareUrl').value = location.href; }
-  function showPane() {
-    lockForm.hidden = unlocked; dateForm.hidden = !unlocked;
-    $('pwErr').textContent = ''; $('dateErr').textContent = '';
-    if (!unlocked) return;
+  // ---------- secret corner: saves vidjanje.json in the repo, so the date is the same for everyone ----------
+  // The GitHub token sits in kljuc.json, encrypted with AES-GCM; the key comes from the corner password (PBKDF2).
+  const dlg = $('admin'), lockForm = $('lockForm'), dateForm = $('dateForm'), connectForm = $('connectForm');
+  const te = new TextEncoder();
+  const u8b64 = u8 => { let s = ''; u8.forEach(b => s += String.fromCharCode(b)); return btoa(s); };
+  const b64u8 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+  const keyFrom = async (pw, salt) => crypto.subtle.deriveKey(
+    { name: 'PBKDF2', salt, iterations: 600000, hash: 'SHA-256' },
+    await crypto.subtle.importKey('raw', te.encode(pw), 'PBKDF2', false, ['deriveKey']),
+    { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
+  async function seal(secret, pw) {
+    const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
+    const ct = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, await keyFrom(pw, salt), te.encode(secret)));
+    return { v: 1, kdf: 'PBKDF2-SHA256-600000', salt: u8b64(salt), iv: u8b64(iv), ct: u8b64(ct) };
+  }
+  async function unseal(box, pw) {
+    const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64u8(box.iv) }, await keyFrom(pw, b64u8(box.salt)), b64u8(box.ct));
+    return new TextDecoder().decode(pt);
+  }
+  window.__kutak = { seal, unseal }; // for testing
+
+  const gh = (tk, path, opts = {}) => fetch(K.api(path), {
+    ...opts, cache: 'no-store',
+    headers: { Authorization: `Bearer ${tk}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' },
+  });
+  async function putFile(tk, path, obj, message) {
+    const content = u8b64(te.encode(JSON.stringify(obj, null, 2) + '\n'));
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const cur = await gh(tk, `${path}?ref=${K.REPO.branch}`);
+      if (cur.status === 401) throw new Error('auth');
+      const sha = cur.ok ? (await cur.json()).sha : undefined;
+      const r = await gh(tk, path, { method: 'PUT', body: JSON.stringify({ message, content, sha, branch: K.REPO.branch }) });
+      if (r.ok) return;
+      if ([401, 403, 404].includes(r.status)) throw new Error('auth');
+      if (r.status !== 409 && r.status !== 422) throw new Error('http ' + r.status);
+    }
+    throw new Error('conflict');
+  }
+
+  let adminPw = '', token = '';
+  const say = (id, text, ok = false) => { $(id).textContent = text; $(id).classList.toggle('ok', ok); };
+  const busy = (id, label) => { const b = $(id); b.disabled = !!label; if (label) { b.dataset.label ||= b.textContent; b.textContent = label; } else if (b.dataset.label) b.textContent = b.dataset.label; };
+  function showPane(which) {
+    lockForm.hidden = which !== 'lock'; dateForm.hidden = which !== 'date'; connectForm.hidden = which !== 'connect';
+    ['pwErr', 'dateErr', 'connectErr'].forEach(id => say(id, ''));
+    if (which !== 'date') return;
     if (state.t) {
       const d = new Date(state.t);
       $('fDate').value = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
       $('fTime').value = `${pad(d.getHours())}:${pad(d.getMinutes())}`;
     } else { $('fDate').value = ''; $('fTime').value = '18:00'; }
     $('fPlace').value = state.p; $('fLetter').value = state.l;
-    showShare(!!state.t && location.hash.length > 1);
   }
   $('lockBtn').addEventListener('click', () => {
-    showPane();
+    showPane(token ? 'date' : 'lock');
     dlg.showModal();
-    setTimeout(() => (unlocked ? $('fDate') : $('pw')).focus(), 60);
+    setTimeout(() => (token ? $('fDate') : $('pw')).focus(), 60);
   });
   $('adminClose').addEventListener('click', () => dlg.close());
   dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
 
-  lockForm.addEventListener('submit', e => {
+  lockForm.addEventListener('submit', async e => {
     e.preventDefault();
-    if (hashPw($('pw').value) === ADMIN_HASH) {
-      unlocked = true;
-      try { sessionStorage.setItem('irena-kutak', '1'); } catch {}
-      $('pw').value = '';
-      showPane();
-      $('fDate').focus();
-    } else {
-      $('pwErr').textContent = K.pick(['Ups, nije to 🙈', 'Irena, ne varaj 😄', 'Pokusaj opet ♡', 'Hmm, ne bas...']);
+    const pw = String($('pw').value).trim().toLowerCase();
+    if (hashPw(pw) !== ADMIN_HASH) {
+      say('pwErr', K.pick(['Ups, nije to 🙈', 'Irena, ne varaj 😄', 'Pokusaj opet ♡', 'Hmm, ne bas...']));
       K.restart(dlg, 'shake');
       $('pw').select();
+      return;
+    }
+    adminPw = pw; $('pw').value = '';
+    busy('unlockBtn', 'Otkljucavam...');
+    let box = null;
+    try { box = await K.repoFile('kljuc.json'); } catch {}
+    token = '';
+    if (box && box.ct) { try { token = await unseal(box, adminPw); } catch {} }
+    busy('unlockBtn');
+    if (token) { showPane('date'); $('fDate').focus(); }
+    else { showPane('connect'); $('token').focus(); }
+  });
+
+  connectForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    const tk = $('token').value.trim();
+    if (!/^(github_pat_|ghp_)\w{20,}$/.test(tk)) { say('connectErr', 'To ne lici na GitHub token, trebalo bi da pocinje sa github_pat_'); return; }
+    busy('connectBtn', 'Povezujem...');
+    try {
+      await putFile(tk, 'kljuc.json', await seal(tk, adminPw), 'Povezi tajni kutak');
+      token = tk; $('token').value = '';
+      showPane('date');
+      say('dateErr', 'Povezano ♡ sad izaberi datum', true);
+      $('fDate').focus();
+    } catch (err) {
+      say('connectErr', err.message === 'auth'
+        ? 'GitHub ne prihvata ovaj token. Provjeri da je izabran repo za-irenu i Contents: Read and write.'
+        : 'Nesto nije uspjelo, provjeri internet i probaj opet.');
+    }
+    busy('connectBtn');
+  });
+
+  async function saveShared(next, label) {
+    busy('saveBtn', 'Cuvam...'); $('clearBtn').disabled = true;
+    try {
+      await putFile(token, 'vidjanje.json', K.meetingToJson(next), label);
+      state = next; K.saveMeeting(state); envelopeOpen = false; render(true);
+      return true;
+    } catch (err) {
+      if (err.message === 'auth') {
+        token = '';
+        say('dateErr', 'Token vise ne vazi (mozda je istekao). Povezi ponovo...');
+        setTimeout(() => { showPane('connect'); say('connectErr', 'Napravi novi token i zalijepi ga ovdje ♡'); }, 1800);
+      } else say('dateErr', 'Nije sacuvano, provjeri internet i probaj opet.');
+      return false;
+    } finally { busy('saveBtn'); $('clearBtn').disabled = false; }
+  }
+
+  dateForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    const dv = $('fDate').value, tv = $('fTime').value || '00:00';
+    if (!dv) { say('dateErr', 'Izaberi datum ♡'); $('fDate').focus(); return; }
+    const t = new Date(`${dv}T${tv}`).getTime();
+    if (!(t > 0)) { say('dateErr', 'Taj datum mi nije jasan...'); return; }
+    if (t <= Date.now()) { say('dateErr', 'Taj trenutak je vec prosao, izaberi neki buduci ♡'); return; }
+    say('dateErr', '');
+    const next = { t, s: state.t === t && state.s ? state.s : Date.now(), p: $('fPlace').value.trim(), l: $('fLetter').value.trim() };
+    if (await saveShared(next, `Novo vidjanje: ${K.fmtDate(t)}`)) {
+      say('dateErr', 'Sacuvano za oboje ♡ Irena ga vidi cim otvori stranicu', true);
+      const { W, H } = K.size();
+      for (let i = 0; i < 4; i++) setTimeout(() => K.burst(rnd(W * .2, W * .8), rnd(H * .15, H * .5), 30), i * 140);
     }
   });
 
-  dateForm.addEventListener('submit', e => {
-    e.preventDefault();
-    const dv = $('fDate').value, tv = $('fTime').value || '00:00';
-    if (!dv) { $('dateErr').textContent = 'Izaberi datum ♡'; $('fDate').focus(); return; }
-    const t = new Date(`${dv}T${tv}`).getTime();
-    if (!(t > 0)) { $('dateErr').textContent = 'Taj datum mi nije jasan...'; return; }
-    if (t <= Date.now()) { $('dateErr').textContent = 'Taj trenutak je vec prosao, izaberi neki buduci ♡'; return; }
-    $('dateErr').textContent = '';
-    state = { t, s: state.t === t && state.s ? state.s : Date.now(), p: $('fPlace').value.trim(), l: $('fLetter').value.trim() };
-    envelopeOpen = false;
-    persist();
-    render(true);
-    showShare(true);
-    const { W, H } = K.size();
-    for (let i = 0; i < 4; i++) setTimeout(() => K.burst(rnd(W * .2, W * .8), rnd(H * .15, H * .5), 30), i * 140);
-  });
-
-  $('clearBtn').addEventListener('click', () => {
-    state = { ...K.EMPTY_MEETING }; envelopeOpen = false;
-    persist(); render(true); showPane();
-    $('dateErr').textContent = 'Datum obrisan.';
-  });
-
-  $('copyBtn').addEventListener('click', async () => {
-    const inp = $('shareUrl');
-    try { await navigator.clipboard.writeText(inp.value); }
-    catch { inp.select(); try { document.execCommand('copy'); } catch {} }
-    $('copyBtn').textContent = 'Kopirano ♡';
-    setTimeout(() => { $('copyBtn').textContent = 'Kopiraj'; }, 1600);
+  $('clearBtn').addEventListener('click', async () => {
+    if (!confirm('Obrisati datum za oboje?')) return;
+    if (await saveShared({ ...K.EMPTY_MEETING, s: Date.now() }, 'Obrisan datum vidjanja')) { showPane('date'); say('dateErr', 'Datum obrisan.', true); }
   });
 
   tick();

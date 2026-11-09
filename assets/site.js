@@ -44,35 +44,44 @@
   K.esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   K.photos = () => (window.SLIKE && Array.isArray(window.SLIKE.photos) ? window.SLIKE.photos : []);
 
-  // ---------- next meeting: link (#d=...) > this device > vidjanje.json ----------
-  const MKEY = 'irena-odbrojavanje-v1';
-  K.EMPTY_MEETING = { t: 0, s: 0, p: '', l: '' };
-  K.meetingHash = st => {
-    const q = new URLSearchParams();
-    q.set('d', st.t); if (st.s) q.set('s', st.s); if (st.p) q.set('p', st.p); if (st.l) q.set('l', K.b64e(st.l));
-    return '#' + q.toString();
+  // ---------- next meeting: one shared vidjanje.json in the repo, the same for everyone ----------
+  // Read straight from the repo through the GitHub API (fresh the moment it is saved),
+  // falling back to the published copy, then to the last copy this phone saw (offline).
+  K.REPO = { owner: 'NemanjaSr51', repo: 'za-irenu', branch: 'main' };
+  K.api = path => `https://api.github.com/repos/${K.REPO.owner}/${K.REPO.repo}/contents/${path}`;
+  K.repoFile = async path => {
+    try {
+      const r = await fetch(`${K.api(path)}?ref=${K.REPO.branch}`, { headers: { Accept: 'application/vnd.github.raw+json' }, cache: 'no-store' });
+      if (r.ok) return await r.json();
+      if (r.status === 404) return null;
+    } catch {}
+    const r = await fetch(`${path}?t=${Date.now()}`, { cache: 'no-store' });
+    if (r.ok) return await r.json();
+    if (r.status === 404) return null;
+    throw new Error('offline');
   };
-  K.saveMeeting = st => { try { if (st.t) localStorage.setItem(MKEY, JSON.stringify(st)); else localStorage.removeItem(MKEY); } catch {} };
+  const MKEY = 'irena-odbrojavanje-v2';
+  K.EMPTY_MEETING = { t: 0, s: 0, p: '', l: '' };
+  K.meetingFromJson = j => {
+    if (!j) return { ...K.EMPTY_MEETING };
+    const t = j.datum ? new Date(j.datum).getTime() || 0 : 0;
+    return { t, s: j.postavljeno ? new Date(j.postavljeno).getTime() || 0 : 0, p: j.mjesto || '', l: j.pismo64 ? K.b64d(j.pismo64) : (j.pismo || '') };
+  };
+  K.meetingToJson = st => {
+    const d = st.t ? new Date(st.t) : null;
+    const local = d ? `${d.getFullYear()}-${K.pad(d.getMonth() + 1)}-${K.pad(d.getDate())}T${K.pad(d.getHours())}:${K.pad(d.getMinutes())}` : '';
+    return { datum: local, mjesto: st.p || '', pismo64: st.l ? K.b64e(st.l) : '', postavljeno: new Date(st.s || Date.now()).toISOString() };
+  };
+  K.saveMeeting = st => { try { localStorage.setItem(MKEY, JSON.stringify(st)); } catch {} };
   K.meeting = async () => {
-    const h = new URLSearchParams(location.hash.slice(1));
-    const d = Number(h.get('d'));
-    if (d > 0) {
-      const st = { t: d, s: Number(h.get('s')) || 0, p: h.get('p') || '', l: h.get('l') ? K.b64d(h.get('l')) : '' };
+    try {
+      const st = K.meetingFromJson(await K.repoFile('vidjanje.json'));
       K.saveMeeting(st);
       return st;
+    } catch {
+      try { const j = JSON.parse(localStorage.getItem(MKEY)); if (j) return { ...K.EMPTY_MEETING, ...j }; } catch {}
+      return { ...K.EMPTY_MEETING };
     }
-    let local = null;
-    try { const j = JSON.parse(localStorage.getItem(MKEY)); if (j && j.t > 0) local = { ...K.EMPTY_MEETING, ...j }; } catch {}
-    if (local && local.t > Date.now() - K.DAY) return local;
-    try {
-      const r = await fetch('vidjanje.json', { cache: 'no-store' });
-      if (r.ok) {
-        const j = await r.json();
-        const t = j && j.datum ? new Date(j.datum).getTime() : 0;
-        if (t > 0) return { t, s: j.postavljeno ? new Date(j.postavljeno).getTime() || 0 : 0, p: j.mjesto || '', l: j.pismo || '' };
-      }
-    } catch {}
-    return local || { ...K.EMPTY_MEETING };
   };
 
   // ---------- hydrangeas + hearts ----------

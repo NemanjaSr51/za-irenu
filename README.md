@@ -38,13 +38,17 @@ To fix a photo's date or add a caption, edit `slike/opisi.json` (keyed by filena
 
 ## Setting the next meeting
 
-Either way works:
+The date lives in one shared file, `vidjanje.json`, so everyone sees the same countdown. Pages read it straight from the repo through the GitHub API, so a change shows up as soon as the page is opened (open pages re-check every 3 minutes).
 
-- **Secret corner** (`odbrojavanje.html`, bottom button "tajni kutak", password `srecica13`): pick the date, place and a sealed letter, then send her the link it gives you.
-- **Edit `vidjanje.json`** on github.com, so it shows without a special link:
+- **Secret corner** (`odbrojavanje.html`, bottom button "tajni kutak", password `srecica13`): pick the date, place and a sealed letter and press "Sacuvaj za oboje". The page commits `vidjanje.json` for you.
+  The first time, it asks for a GitHub token (fine-grained, only the `za-irenu` repo, Contents: Read and write; create it at https://github.com/settings/personal-access-tokens/new).
+  The token is stored in `kljuc.json`, encrypted with the corner password (AES-GCM, PBKDF2 600k), so after that any phone that knows the password can save. When the token expires, the corner asks for a new one.
+- **Or edit `vidjanje.json`** on github.com:
   ```json
   { "datum": "2026-12-24T18:00", "mjesto": "kod tebe", "pismo": "otvori me kad se vidimo ♡" }
   ```
+
+Because `kljuc.json` is public (encrypted), use a corner password that is hard to guess. Changing it: run `hashLozinke('new')` in the console, paste the number as `ADMIN_HASH` in `odbrojavanje.html`, then reconnect the token once.
 
 ## Changing the passwords
 
