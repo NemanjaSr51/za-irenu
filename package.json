@@ -1,0 +1,15 @@
+{
+  "name": "za-irenu",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs"
+  },
+  "engines": {
+    "node": ">=20.11"
+  },
+  "dependencies": {
+    "exif-reader": "^2.0.3",
+    "sharp": "^0.35.5"
+  }
+}

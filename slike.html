@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="sr-Latn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#fde6f1">
+<script src="assets/guard.js"></script>
+<title>Nase slike ♡</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 90'%3E%3Cpath d='M50 86 C20 62 4 46 4 27 C4 13 15 4 28 4 C38 4 46 10 50 18 C54 10 62 4 72 4 C85 4 96 13 96 27 C96 46 80 62 50 86Z' fill='%23ff5c9e'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Fredoka:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  /* Layout: hero, then a two-column (three on wide screens) wall of tilted polaroids; tapping one opens a full-screen viewer with swipe */
+  main { max-width: 960px; }
+  .wall { columns: 2; column-gap: 14px; }
+  @media (min-width: 720px) { .wall { columns: 3; column-gap: 22px; } }
+  .pic {
+    break-inside: avoid; display: flex; width: 100%; margin: 0 0 18px; border: 0; cursor: zoom-in; font: inherit; text-align: inherit;
+    transform: rotate(var(--r, 0deg)); transition: transform .35s cubic-bezier(.3, 1.6, .5, 1), box-shadow .3s;
+    animation: rise .8s cubic-bezier(.3, 1.3, .5, 1) both; animation-delay: var(--d, 0ms);
+    position: relative;
+  }
+  .pic:hover { transform: rotate(0deg) scale(1.03); z-index: 2; }
+  .pic:active { transform: rotate(0deg) scale(.98); }
+  .pic img { opacity: 0; transition: opacity .6s; }
+  .pic img.loaded { opacity: 1; }
+  .pic .cap { font-size: 22px; }
+  .pic.taped::before {
+    content: ""; position: absolute; top: -10px; left: 50%; width: 70px; height: 22px; margin-left: -35px;
+    background: rgba(255, 182, 213, .75); border-radius: 3px; transform: rotate(var(--tr, -4deg)); z-index: 1;
+    box-shadow: 0 2px 4px rgba(122, 47, 88, .1);
+  }
+  @media (max-width: 420px) { .wall { column-gap: 10px; } .pic { margin-bottom: 14px; padding: 6px 6px 9px; } .pic .cap { font-size: 19px; } .pic .date { font-size: 11px; } }
+
+  .empty { gap: 18px; }
+  .ghosts { display: flex; justify-content: center; gap: 0; margin: 8px 0 4px; }
+  .ghost { width: 86px; aspect-ratio: 4 / 5; background: #fff; border-radius: 10px; padding: 6px 6px 18px; box-shadow: 0 10px 22px -12px rgba(122, 47, 88, .45); }
+  .ghost i { display: grid; place-items: center; width: 100%; height: 100%; border-radius: 6px; background: linear-gradient(160deg, #ffe3ef, #ffc8e0); }
+  .ghost svg { width: 30px; }
+  .ghost:nth-child(1) { transform: rotate(-9deg) translate(12px, 6px); }
+  .ghost:nth-child(2) { transform: translateY(-6px); z-index: 1; }
+  .ghost:nth-child(3) { transform: rotate(8deg) translate(-12px, 8px); }
+
+  /* ---------- viewer ---------- */
+  dialog.lb {
+    width: 100vw; height: 100vh; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0;
+    background: radial-gradient(120% 90% at 50% 40%, rgba(110, 28, 70, .93), rgba(48, 8, 30, .97)); color: #fff;
+    overflow: hidden;
+  }
+  dialog.lb[open] { display: flex; flex-direction: column; animation: lbIn .35s ease; }
+  @keyframes lbIn { from { opacity: 0; } }
+  dialog.lb::backdrop { background: transparent; }
+  .lb-stage { flex: 1; min-height: 0; display: grid; place-items: center; padding: max(56px, env(safe-area-inset-top)) 12px 8px; touch-action: pan-y pinch-zoom; position: relative; user-select: none; -webkit-user-select: none; }
+  .lb-frame { background: #fff; padding: 8px 8px 10px; border-radius: 14px; box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .6); max-width: 100%; max-height: 100%; display: flex; transition: transform .3s cubic-bezier(.3, 1.3, .5, 1), opacity .25s; }
+  .lb-frame.dragging { transition: none; }
+  .lb-frame img { display: block; max-width: min(100%, 1400px); max-height: calc(100dvh - 190px - env(safe-area-inset-bottom, 0px)); width: auto; height: auto; border-radius: 8px; -webkit-user-drag: none; }
+  .lb-heart { position: absolute; left: 50%; top: 50%; width: 130px; height: 118px; margin: -59px 0 0 -65px; pointer-events: none; opacity: 0; }
+  .lb-heart svg { width: 100%; height: 100%; }
+  .lb-heart.go { animation: like .9s cubic-bezier(.3, 1.6, .5, 1) forwards; }
+  @keyframes like { 0% { transform: scale(0); opacity: 1; } 40% { transform: scale(1.15); opacity: 1; } 70% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.3) translateY(-30px); opacity: 0; } }
+  .lb-bar { display: grid; grid-template-columns: 52px 1fr 52px; align-items: center; gap: 8px; padding: 6px 12px calc(16px + env(safe-area-inset-bottom, 0px)); }
+  .lb-info { text-align: center; display: flex; flex-direction: column; min-width: 0; }
+  .lb-cap { font-family: var(--display); font-size: 32px; line-height: 1.15; color: #ffd6e8; overflow-wrap: anywhere; }
+  .lb-meta { font-size: 13px; letter-spacing: .08em; color: rgba(255, 214, 232, .75); }
+  .lb-btn { width: 52px; height: 52px; border-radius: 50%; border: 2px solid rgba(255, 255, 255, .25); background: rgba(255, 255, 255, .1); color: #fff; cursor: pointer; display: grid; place-items: center; transition: background .2s, transform .15s; }
+  .lb-btn:hover { background: rgba(255, 255, 255, .2); }
+  .lb-btn:active { transform: scale(.9); }
+  .lb-btn svg { width: 22px; height: 22px; }
+  .lb-btn:disabled { opacity: .3; cursor: default; }
+  .lb-x { position: absolute; top: max(12px, env(safe-area-inset-top)); right: 12px; z-index: 2; }
+  .lb-tip { position: absolute; top: max(22px, calc(env(safe-area-inset-top) + 10px)); left: 0; right: 0; text-align: center; font-size: 13px; color: rgba(255, 214, 232, .7); pointer-events: none; }
+</style>
+</head>
+<body>
+<canvas id="sky" aria-hidden="true"></canvas>
+<div class="corner bl" aria-hidden="true" data-bloom="pink"></div>
+<div class="corner br" aria-hidden="true" data-bloom="deep"></div>
+<div class="corner tr" aria-hidden="true" data-bloom="light"></div>
+
+<main>
+  <section class="hero">
+    <span class="eyebrow">✧ nase uspomene ✧</span>
+    <h1>Nase slike</h1>
+    <p class="sub" id="sub">mi, u malim kockicama srece</p>
+  </section>
+
+  <section class="wall" id="wall" aria-label="Slike"></section>
+
+  <section class="card empty" id="empty" hidden>
+    <div class="ghosts" aria-hidden="true">
+      <span class="ghost"><i data-heart></i></span><span class="ghost"><i data-heart></i></span><span class="ghost"><i data-heart></i></span>
+    </div>
+    <h2>Uskoro ovdje</h2>
+    <p class="hint" style="font-size:16px">nase slike stizu... a i mi cemo napraviti jos milion ♡</p>
+  </section>
+
+  <footer class="site">
+    <small>pritisni sliku da je vidis u velikom, dupli dodir za srce ♡</small>
+  </footer>
+</main>
+<nav class="tabbar" data-page="slike"></nav>
+
+<dialog class="lb" id="lb" aria-label="Slika">
+  <p class="lb-tip" id="lbTip">prevuci lijevo ili desno ♡</p>
+  <button class="lb-btn lb-x" id="lbClose" type="button" aria-label="Zatvori"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  <div class="lb-stage" id="lbStage">
+    <div class="lb-frame" id="lbFrame"><img id="lbImg" alt=""></div>
+    <div class="lb-heart" id="lbHeart" aria-hidden="true" data-heart></div>
+  </div>
+  <div class="lb-bar">
+    <button class="lb-btn" id="lbPrev" type="button" aria-label="Prethodna"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <div class="lb-info"><span class="lb-cap" id="lbCap"></span><span class="lb-meta" id="lbMeta"></span></div>
+    <button class="lb-btn" id="lbNext" type="button" aria-label="Sljedeca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+  </div>
+</dialog>
+
+<script src="slike.js"></script>
+<script src="assets/site.js"></script>
+<script>
+(() => {
+  const { $, pl, esc } = K;
+  const photos = K.photos();
+  const wall = $('wall');
+
+  if (!photos.length) {
+    $('empty').hidden = false;
+    wall.hidden = true;
+  } else {
+    $('sub').textContent = `${photos.length} ${pl(photos.length, 'uspomena', 'uspomene', 'uspomena')}, i jos milion ce ih biti ♡`;
+    const tilts = [-2.2, 1.6, -1, 2.4, -1.8, 1, 2, -2.6];
+    wall.innerHTML = photos.map((p, i) => `
+      <button class="polaroid pic${i % 3 === 1 ? ' taped' : ''}" type="button" data-i="${i}"
+        style="--r:${tilts[i % tilts.length]}deg;--tr:${i % 2 ? 5 : -4}deg;--d:${Math.min(i, 12) * 60}ms"
+        aria-label="${esc(p.caption || 'Slika')}${p.date ? ', ' + esc(K.fmtDay(p.date)) : ''}">
+        <img src="${esc(p.t)}" width="${p.tw}" height="${p.th}" alt="${esc(p.caption || '')}" loading="${i < 6 ? 'eager' : 'lazy'}" decoding="async">
+        ${p.caption ? `<span class="cap">${esc(p.caption)}</span>` : ''}
+        ${p.date ? `<span class="date">${esc(K.fmtDay(p.date))}</span>` : ''}
+      </button>`).join('');
+    wall.querySelectorAll('img').forEach(img => {
+      if (img.complete) img.classList.add('loaded');
+      else img.addEventListener('load', () => img.classList.add('loaded'), { once: true });
+    });
+    wall.addEventListener('click', e => { const b = e.target.closest('.pic'); if (b) openAt(+b.dataset.i); });
+  }
+
+  // ---------- viewer ----------
+  const lb = $('lb'), frame = $('lbFrame'), img = $('lbImg');
+  let cur = 0;
+  function show(i, dir = 0) {
+    cur = (i + photos.length) % photos.length;
+    const p = photos[cur];
+    const swap = () => {
+      img.src = p.v; img.alt = p.caption || 'nasa slika';
+      $('lbCap').textContent = p.caption || 'mi ♡';
+      $('lbMeta').textContent = [p.date ? K.fmtDay(p.date) : '', `${cur + 1} / ${photos.length}`].filter(Boolean).join(' · ');
+      [photos[cur + 1], photos[cur - 1]].forEach(n => { if (n) { const pre = new Image(); pre.src = n.v; } });
+    };
+    if (dir && !K.reduce) {
+      frame.style.opacity = '0'; frame.style.transform = `translateX(${-dir * 40}px)`;
+      setTimeout(() => {
+        swap();
+        frame.classList.add('dragging');
+        frame.style.transform = `translateX(${dir * 40}px)`;
+        void frame.offsetWidth;
+        frame.classList.remove('dragging');
+        frame.style.opacity = '1'; frame.style.transform = '';
+      }, 180);
+    } else swap();
+    const one = photos.length < 2;
+    $('lbPrev').disabled = one; $('lbNext').disabled = one;
+  }
+  function openAt(i) {
+    show(i);
+    lb.showModal();
+    $('lbTip').hidden = photos.length < 2;
+    setTimeout(() => { $('lbTip').hidden = true; }, 2600);
+  }
+  $('lbPrev').addEventListener('click', () => show(cur - 1, -1));
+  $('lbNext').addEventListener('click', () => show(cur + 1, 1));
+  $('lbClose').addEventListener('click', () => lb.close());
+  lb.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft') show(cur - 1, -1);
+    if (e.key === 'ArrowRight') show(cur + 1, 1);
+  });
+
+  // swipe, tap outside to close, double tap for a heart
+  const stage = $('lbStage');
+  let sx = 0, sy = 0, dx = 0, down = false, moved = false, lastTap = 0;
+  stage.addEventListener('pointerdown', e => { down = true; moved = false; sx = e.clientX; sy = e.clientY; dx = 0; frame.classList.add('dragging'); });
+  stage.addEventListener('pointermove', e => {
+    if (!down) return;
+    dx = e.clientX - sx;
+    if (Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(e.clientY - sy)) { moved = true; frame.style.transform = `translateX(${dx}px) rotate(${dx / 40}deg)`; }
+  });
+  const end = e => {
+    if (!down) return;
+    down = false; frame.classList.remove('dragging');
+    if (moved && Math.abs(dx) > 60 && photos.length > 1) { show(cur + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1); return; }
+    frame.style.transform = '';
+    if (moved || e.type === 'pointercancel') return;
+    const onPhoto = e.target.closest('.lb-frame');
+    const now = Date.now();
+    if (onPhoto && now - lastTap < 320) { K.restart($('lbHeart'), 'go'); lastTap = 0; return; }
+    lastTap = now;
+    if (!onPhoto) lb.close();
+  };
+  stage.addEventListener('pointerup', end);
+  stage.addEventListener('pointercancel', end);
+  stage.addEventListener('dblclick', e => e.preventDefault());
+
+  // deep link: slike.html#foto=<id>
+  const want = new URLSearchParams(location.hash.slice(1)).get('foto');
+  if (want) { const i = photos.findIndex(p => p.id === want); if (i >= 0) openAt(i); }
+})();
+</script>
+</body>
+</html>

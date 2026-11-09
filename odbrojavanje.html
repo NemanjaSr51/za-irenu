@@ -1,86 +1,25 @@
 <!doctype html>
 <html lang="sr-Latn">
+<head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#fde6f1">
+<script src="assets/guard.js"></script>
 <title>Jos malo ♡</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 90'%3E%3Cpath d='M50 86 C20 62 4 46 4 27 C4 13 15 4 28 4 C38 4 46 10 50 18 C54 10 62 4 72 4 C85 4 96 13 96 27 C96 46 80 62 50 86Z' fill='%23ff5c9e'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Fredoka:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/site.css">
 <style>
-  /* Layout: same dreamy pink sky + hydrangeas as "Za Irenu"; one column: hero, big countdown, the road between us, little stats, a sealed letter, a secret corner */
-  :root {
-    --sky-top: #fde6f1;
-    --sky-bottom: #ffd3e6;
-    --ink: #7a2f58;
-    --ink-soft: #a85c86;
-    --rose: #ff7fb3;
-    --blush: #ffa6cf;
-    --deep: #e8559a;
-    --card: rgba(255, 255, 255, 0.62);
-    --line: rgba(255, 255, 255, 0.9);
-    --display: "Great Vibes", "Brush Script MT", cursive;
-    --body: "Fredoka", "Trebuchet MS", system-ui, sans-serif;
-    color-scheme: light;
-  }
-  * { box-sizing: border-box; }
-  html { min-height: 100%; }
-  body {
-    margin: 0; min-height: 100%;
-    background: linear-gradient(180deg, var(--sky-top), var(--sky-bottom)) fixed, var(--sky-top);
-    color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6;
-    overflow-x: hidden;
-  }
-  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  [hidden] { display: none !important; }
+  /* Layout: hero, big countdown, the road between us, little stats, a sealed letter, the secret corner */
 
-  #sky { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
-  .corner { position: fixed; width: min(42vw, 300px); pointer-events: none; z-index: 1; opacity: .95; }
-  .corner svg { width: 100%; height: auto; display: block; animation: sway 7s ease-in-out infinite; transform-origin: 50% 100%; }
-  .corner.bl { left: -40px; bottom: -40px; }
-  .corner.br { right: -40px; bottom: -40px; }
-  .corner.br svg { animation-delay: -3.5s; }
-  .corner.tr { right: -60px; top: -60px; width: min(32vw, 220px); }
-  .corner.tr svg { transform-origin: 50% 0; animation-delay: -1.7s; }
-  .corner.tl { left: -70px; top: -70px; width: min(26vw, 180px); }
-  .corner.tl svg { transform-origin: 50% 0; animation-delay: -5s; }
-  @keyframes sway { 0%, 100% { transform: rotate(-2.5deg); } 50% { transform: rotate(2.5deg); } }
-
-  main {
-    position: relative; z-index: 2;
-    max-width: 720px; margin: 0 auto;
-    padding-inline: 16px; padding-block: 48px 170px;
-    display: flex; flex-direction: column; gap: 48px;
-  }
-  .hero { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 4px; }
-  .eyebrow { font-weight: 500; letter-spacing: .14em; text-transform: uppercase; font-size: 13px; color: var(--ink-soft); }
-  h1 {
-    font-family: var(--display); font-weight: 400;
-    font-size: clamp(64px, 16vw, 128px); line-height: 1.05; margin: 0;
-    background: linear-gradient(90deg, var(--rose), var(--blush), var(--deep), var(--rose));
-    background-size: 300% 100%;
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-    animation: shimmer 8s linear infinite;
-    filter: drop-shadow(0 4px 14px rgba(255, 127, 179, .35));
-    text-wrap: balance;
-  }
-  @keyframes shimmer { to { background-position: 300% 0; } }
-  .sub { font-size: 20px; color: var(--ink-soft); margin: 0; max-width: 32ch; text-wrap: balance; }
-  h2 { font-family: var(--display); font-weight: 400; font-size: clamp(44px, 10vw, 58px); line-height: 1.1; margin: 0; text-align: center; color: var(--rose); text-wrap: balance; }
-
-  .card {
-    background: var(--card); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    border: 2px solid var(--line); border-radius: 32px;
-    box-shadow: 0 18px 50px -20px rgba(232, 85, 154, .55);
-    padding: 32px 20px; text-align: center;
-    display: flex; flex-direction: column; align-items: center; gap: 14px;
-  }
-
-  /* ---------- the countdown ---------- */
+  /* ---------- countdown ---------- */
   .days { display: flex; flex-direction: column; align-items: center; line-height: .9; }
   .days-num {
-    font-weight: 700; font-size: clamp(110px, 34vw, 210px); letter-spacing: -.03em;
-    font-variant-numeric: tabular-nums;
-    background: linear-gradient(160deg, #ff9cc7 10%, var(--deep) 60%, #c93d82);
+    font-weight: 700; font-size: clamp(110px, 34vw, 210px); letter-spacing: -.03em; font-variant-numeric: tabular-nums;
+    background: linear-gradient(160deg, #ff9cc7 10%, var(--deep) 60%, var(--deeper));
     -webkit-background-clip: text; background-clip: text; color: transparent;
     filter: drop-shadow(0 10px 22px rgba(232, 85, 154, .35));
     display: inline-block;
@@ -93,24 +32,21 @@
     box-shadow: 0 10px 24px -16px rgba(232, 85, 154, .6);
   }
   .tile b { font-size: clamp(34px, 10vw, 48px); font-weight: 600; line-height: 1.1; color: var(--deep); font-variant-numeric: tabular-nums; display: inline-block; }
-  .tile span { font-size: 13px; color: var(--ink-soft); letter-spacing: .08em; text-transform: uppercase; }
+  .tile span { font-size: 12px; color: var(--ink-soft); letter-spacing: .08em; text-transform: uppercase; }
   .flip { animation: flip .45s cubic-bezier(.3, 1.6, .5, 1); }
   @keyframes flip { 0% { transform: translateY(-35%) scale(.85); opacity: 0; } 100% { transform: none; opacity: 1; } }
   .pop { animation: pop .7s cubic-bezier(.3, 1.8, .4, 1); }
   @keyframes pop { 0% { transform: scale(.6) rotate(-6deg); } 100% { transform: none; } }
 
-  .when { margin: 6px 0 0; font-weight: 500; font-size: 18px; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 10px; }
+  .when { margin: 6px 0 0; font-weight: 500; font-size: 17px; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 10px; }
   .chip { background: rgba(255, 255, 255, .8); border: 2px solid var(--line); border-radius: 999px; padding: 4px 14px; display: inline-flex; align-items: center; gap: 6px; }
   .chip svg { width: 18px; height: 18px; flex: none; }
   .mood { margin: 0; font-size: 21px; font-weight: 600; color: var(--deep); max-width: 30ch; text-wrap: balance; }
 
-  .idle-heart, .today-heart { width: 120px; height: 110px; animation: beat 1.4s ease-in-out infinite; }
-  .idle-heart svg, .today-heart svg { width: 100%; height: 100%; filter: drop-shadow(0 8px 16px rgba(255, 127, 179, .5)); }
-  .idle-heart { opacity: .8; }
+  .big-heart { width: 120px; height: 110px; animation: beat 1.4s ease-in-out infinite; }
+  .big-heart svg { width: 100%; height: 100%; }
   .big-script { font-family: var(--display); font-size: clamp(56px, 15vw, 96px); line-height: 1; color: var(--deep); margin: 0; }
-  @keyframes beat { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.12); } 30% { transform: scale(.97); } 45% { transform: scale(1.08); } }
 
-  /* state switches */
   .only-counting, .only-today, .only-idle { display: none !important; }
   body[data-state="counting"] .only-counting,
   body[data-state="today"] .only-today,
@@ -118,45 +54,36 @@
   body[data-state="past"] .only-idle { display: flex !important; }
   body[data-state="counting"] .tiles.only-counting,
   body[data-state="counting"] .stats.only-counting { display: grid !important; }
+  .stack { flex-direction: column; align-items: center; gap: 6px; }
 
-  /* ---------- the road between us ---------- */
-  .road-card { gap: 4px; padding-inline: 12px; }
+  /* ---------- road ---------- */
+  .road-card { gap: 4px; padding-inline: 10px; }
   .road { width: 100%; height: auto; overflow: visible; }
   .road .walker { transition: transform 1.2s cubic-bezier(.4, 1.4, .5, 1); }
   .road .bob { animation: bob 1.6s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
   .road .bob.r { animation-delay: -.8s; }
   @keyframes bob { 0%, 100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-6px) rotate(4deg); } }
-  .road text { font-family: var(--body); font-weight: 600; font-size: 17px; fill: var(--ink); }
+  .road text { font-family: var(--body); font-weight: 600; font-size: 18px; fill: var(--ink); }
   .road .meet { transform-box: fill-box; transform-origin: center; }
   body[data-state="today"] .road .meet, body[data-state="past"] .road .meet { animation: beat 1.4s ease-in-out infinite; }
   .road-pct { margin: 0; color: var(--ink-soft); }
   .road-pct b { color: var(--deep); font-weight: 600; }
 
   /* ---------- stats ---------- */
-  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; }
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  @media (min-width: 640px) { .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
   .stat {
-    background: var(--card); border-radius: 24px; padding: 18px 16px;
+    background: var(--card); border-radius: 24px; padding: 16px 14px;
     border: 2px solid var(--line);
     display: flex; flex-direction: column; gap: 2px; min-width: 0;
     transition: transform .25s;
   }
   .stat:hover { transform: translateY(-4px) rotate(-1deg); }
-  .stat .icon { width: 30px; height: 30px; margin-bottom: 4px; }
-  .stat b { font-weight: 600; font-size: 28px; line-height: 1.2; color: var(--deep); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
-  .stat span { color: var(--ink-soft); font-size: 15px; line-height: 1.35; }
+  .stat .icon { width: 28px; height: 28px; margin-bottom: 4px; }
+  .stat b { font-weight: 600; font-size: 26px; line-height: 1.2; color: var(--deep); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+  .stat span { color: var(--ink-soft); font-size: 14px; line-height: 1.35; }
 
-  /* ---------- heart notes ---------- */
-  .heart-btn {
-    border: 0; background: none; cursor: pointer; padding: 0;
-    width: 110px; height: 100px; animation: beat 1.4s ease-in-out infinite; border-radius: 24px;
-  }
-  .heart-btn:focus-visible, .envelope:focus-visible, .lock-btn:focus-visible { outline: 3px dashed var(--deep); outline-offset: 6px; }
-  .heart-btn svg { width: 100%; height: 100%; filter: drop-shadow(0 8px 16px rgba(255, 127, 179, .5)); }
-  .note { font-size: 22px; font-weight: 500; min-height: 3.2em; max-width: 30ch; margin: 0; text-wrap: balance; transition: opacity .3s, transform .3s; }
-  .note.swap { opacity: 0; transform: translateY(6px) scale(.98); }
-  .hint { font-size: 14px; color: var(--ink-soft); margin: 0; text-wrap: balance; }
-
-  /* ---------- the sealed letter ---------- */
+  /* ---------- sealed letter ---------- */
   .letter-sec { display: flex; flex-direction: column; align-items: center; gap: 18px; }
   .envelope {
     position: relative; width: min(320px, 84vw); aspect-ratio: 1.55;
@@ -167,8 +94,8 @@
   .envelope:hover { transform: translateY(-3px) rotate(-1deg); }
   .envelope > span { position: absolute; inset: 0; border-radius: 14px; }
   .env-back { background: #ff9cc7; }
-  .env-paper {
-    inset: 8% 7% 6% !important; background: #fffafc; border-radius: 8px !important;
+  .envelope > .env-paper {
+    inset: 8% 7% 6%; background: #fffafc; border-radius: 8px;
     background-image: repeating-linear-gradient(180deg, transparent 0 18px, #ffe3ef 18px 20px);
     transition: transform .7s .25s cubic-bezier(.3, 1.3, .5, 1);
   }
@@ -177,35 +104,23 @@
     background: linear-gradient(180deg, #ffd6e8, #ffa6cf); clip-path: polygon(0 0, 100% 0, 50% 60%);
     transform-origin: 50% 0; transition: transform .6s cubic-bezier(.5, 0, .3, 1); z-index: 3;
   }
-  .env-seal { inset: auto !important; left: 50% !important; top: 47% !important; width: 54px; height: 50px; transform: translate(-50%, -50%); z-index: 4; transition: opacity .3s, transform .3s; }
+  .envelope > .env-seal { inset: auto; left: 50%; top: 47%; width: 54px; height: 50px; transform: translate(-50%, -50%); z-index: 4; transition: opacity .3s, transform .3s; }
   .env-seal svg { width: 100%; height: 100%; filter: drop-shadow(0 3px 4px rgba(122, 47, 88, .3)); }
   .envelope.open .env-flap { transform: rotateX(180deg); z-index: 0; }
-  .envelope.open .env-seal { opacity: 0; transform: translate(-50%, -50%) scale(.4); }
-  .envelope.open .env-paper { transform: translateY(-42%); }
+  .envelope.open > .env-seal { opacity: 0; transform: translate(-50%, -50%) scale(.4); }
+  .envelope.open > .env-paper { transform: translateY(-42%); }
   .envelope.nope { animation: nope .5s; }
-  @keyframes nope { 20%, 60% { transform: translateX(-8px) rotate(-2deg); } 40%, 80% { transform: translateX(8px) rotate(2deg); } }
   .letter-card {
     background: #fffafc; border: 2px solid var(--line); border-radius: 24px; padding: 26px 22px;
     max-width: 520px; width: 100%; text-align: center; box-shadow: 0 18px 50px -24px rgba(232, 85, 154, .6);
     animation: rise .8s cubic-bezier(.3, 1.4, .5, 1);
   }
   .letter-card p { margin: 0; font-family: var(--display); font-size: clamp(30px, 8vw, 40px); line-height: 1.25; color: var(--deep); white-space: pre-wrap; overflow-wrap: anywhere; }
-  @keyframes rise { from { opacity: 0; transform: translateY(20px) scale(.96); } }
 
-  footer { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 14px; }
-  footer small { color: var(--ink-soft); font-size: 14px; }
-  .lock-btn {
-    border: 2px solid var(--line); background: rgba(255, 255, 255, .7); color: var(--ink-soft);
-    font: 500 14px var(--body); border-radius: 999px; padding: 8px 16px; cursor: pointer;
-    display: inline-flex; align-items: center; gap: 8px; transition: transform .2s, color .2s;
-  }
-  .lock-btn:hover { transform: translateY(-2px); color: var(--deep); }
-  .lock-btn svg { width: 16px; height: 18px; }
-
-  /* ---------- secret corner (dialog) ---------- */
+  /* ---------- secret corner ---------- */
   dialog {
-    border: 2px solid var(--line); border-radius: 32px; padding: 30px 22px 24px;
-    width: min(440px, calc(100vw - 32px)); max-height: calc(100dvh - 32px);
+    border: 2px solid var(--line); border-radius: 30px; padding: 28px 20px 22px;
+    width: min(440px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); overflow: auto;
     background: linear-gradient(180deg, #fff8fb, #ffeef6); color: var(--ink);
     box-shadow: 0 30px 80px -20px rgba(232, 85, 154, .6);
   }
@@ -216,16 +131,14 @@
   .pane .hint { text-align: center; margin-top: -6px; }
   .lock-ico { width: 64px; height: 72px; margin: 0 auto; animation: beat 2.2s ease-in-out infinite; }
   .lock-ico svg { width: 100%; height: 100%; }
-  .shake { animation: nope .45s; }
   .x {
-    position: absolute; top: 12px; right: 12px; width: 40px; height: 40px; border-radius: 50%;
+    position: absolute; top: 10px; right: 10px; width: 42px; height: 42px; border-radius: 50%;
     border: 0; background: rgba(255, 166, 207, .25); color: var(--deep); font: 600 24px/1 var(--body); cursor: pointer;
   }
-  .x:hover { background: rgba(255, 166, 207, .45); }
-  .field { display: flex; flex-direction: column; gap: 4px; min-width: 0; flex: 1; }
+  .field { display: flex; flex-direction: column; gap: 4px; min-width: 0; flex: 1; text-align: left; }
   .field > span { font-size: 14px; font-weight: 500; color: var(--ink-soft); }
   .field input, .field textarea {
-    font: 400 17px var(--body); color: var(--ink); width: 100%; min-width: 0;
+    font: 400 17px var(--body); color: var(--ink); width: 100%; min-width: 0; min-height: 46px;
     background: #fff; border: 2px solid #ffd0e4; border-radius: 16px; padding: 10px 14px;
     outline: none; transition: border-color .2s, box-shadow .2s; resize: vertical;
   }
@@ -234,27 +147,14 @@
   .row .field { flex: 1 1 140px; }
   .err { margin: -4px 0 0; min-height: 1.4em; text-align: center; color: var(--deep); font-weight: 500; font-size: 15px; }
   .actions { display: flex; gap: 10px; flex-wrap: wrap; }
-  .btn {
-    flex: 1 1 auto; border: 0; cursor: pointer; border-radius: 999px; padding: 12px 20px;
-    font: 600 17px var(--body); color: #fff;
-    background: linear-gradient(135deg, var(--rose), var(--deep));
-    box-shadow: 0 10px 22px -10px rgba(232, 85, 154, .8); transition: transform .15s, filter .15s;
-  }
-  .btn:hover { transform: translateY(-2px); filter: brightness(1.05); }
-  .btn:active { transform: translateY(1px) scale(.98); }
-  .btn:focus-visible { outline: 3px dashed var(--deep); outline-offset: 3px; }
-  .btn.ghost { background: #fff; color: var(--deep); border: 2px solid #ffd0e4; box-shadow: none; }
-  .btn.small { flex: none; padding: 10px 16px; font-size: 15px; }
-  .share { background: #fff; border: 2px dashed #ffc0dc; border-radius: 20px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+  .actions .btn { flex: 1 1 auto; }
+  .share { background: #fff; border: 2px dashed #ffc0dc; border-radius: 20px; padding: 14px; display: flex; flex-direction: column; gap: 8px; text-align: left; }
   .share p { margin: 0; font-size: 15px; }
   .share-row { display: flex; gap: 8px; }
   .share-row input { flex: 1; min-width: 0; font: 400 14px var(--body); color: var(--ink-soft); border: 2px solid #ffd0e4; border-radius: 12px; padding: 8px 10px; background: #fffafc; }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation: none !important; transition: none !important; }
-  }
+  .share-row .btn { min-height: 42px; padding: 8px 16px; font-size: 15px; }
 </style>
-
+</head>
 <body data-state="none">
 <canvas id="sky" aria-hidden="true"></canvas>
 <div class="corner bl" aria-hidden="true" data-bloom="pink"></div>
@@ -269,10 +169,8 @@
     <p class="sub" id="sub">i opet si u mom zagrljaju</p>
   </section>
 
-  <!-- the countdown -->
   <section class="card" aria-labelledby="title">
     <span class="eyebrow" id="countEyebrow">do naseg sljedeceg vidjanja</span>
-
     <div class="days only-counting" aria-hidden="true">
       <span class="days-num" id="days">0</span>
       <span class="days-label" id="daysL">dana</span>
@@ -282,23 +180,19 @@
       <div class="tile"><b id="min">00</b><span id="minL">minuta</span></div>
       <div class="tile"><b id="sec">00</b><span id="secL">sekundi</span></div>
     </div>
-
-    <div class="only-today" style="flex-direction:column;align-items:center;gap:6px">
-      <div class="today-heart" aria-hidden="true" data-heart></div>
+    <div class="only-today stack">
+      <div class="big-heart" aria-hidden="true" data-heart></div>
       <p class="big-script">Danas!!!</p>
     </div>
-
-    <div class="only-idle" style="flex-direction:column;align-items:center;gap:8px">
-      <div class="idle-heart" aria-hidden="true" data-heart></div>
+    <div class="only-idle stack">
+      <div class="big-heart" aria-hidden="true" data-heart style="opacity:.8"></div>
       <p class="big-script" id="idleBig" style="font-size:clamp(44px,12vw,72px)">uskoro...</p>
     </div>
-
     <p class="when" id="when" hidden></p>
     <p class="mood" id="mood"></p>
     <p class="sr-only" aria-live="polite" id="srSummary"></p>
   </section>
 
-  <!-- the road between us -->
   <section class="card road-card">
     <h2>Put do tebe</h2>
     <svg class="road" id="road" viewBox="0 0 600 170" role="img" aria-labelledby="roadPct">
@@ -324,21 +218,11 @@
     <p class="road-pct" id="roadPct">jos nismo krenuli</p>
   </section>
 
-  <!-- little numbers -->
   <section class="stats only-counting" id="stats" aria-label="Malo brojeva"></section>
 
-  <!-- notes -->
-  <section class="card" aria-live="polite">
-    <h2>Pritisni srce</h2>
-    <button class="heart-btn" id="heart" aria-label="Prikazi poruku" data-heart></button>
-    <p class="note" id="note">Jedva cekam da te vidim.</p>
-    <p class="hint">♡</p>
-  </section>
-
-  <!-- the sealed letter -->
   <section class="letter-sec" id="letterSec" hidden>
     <h2>Pismo za tebe</h2>
-    <button class="envelope" id="envelope" aria-label="Otvori pismo" aria-describedby="letterHint">
+    <button class="envelope" id="envelope" type="button" aria-label="Otvori pismo" aria-describedby="letterHint" data-noburst>
       <span class="env-back"></span>
       <span class="env-paper"></span>
       <span class="env-pocket"></span>
@@ -349,19 +233,18 @@
     <div class="letter-card" id="letterCard" hidden><p id="letterText"></p></div>
   </section>
 
-  <footer>
+  <footer class="site">
     <small>pritisni bilo gdje za zvjezdice i srca ♡</small>
-    <button class="lock-btn" id="lockBtn" type="button">
+    <button class="lock-link" id="lockBtn" type="button">
       <svg viewBox="0 0 16 18" aria-hidden="true"><path d="M4 8V5.5a4 4 0 0 1 8 0V8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><rect x="1" y="8" width="14" height="10" rx="3" fill="currentColor"/></svg>
       tajni kutak
     </button>
   </footer>
 </main>
+<nav class="tabbar" data-page="odbrojavanje"></nav>
 
-<!-- secret corner -->
 <dialog id="admin" aria-labelledby="adminTitle">
   <button class="x" id="adminClose" type="button" aria-label="Zatvori">×</button>
-
   <form class="pane" id="lockForm" novalidate>
     <div class="lock-ico" aria-hidden="true">
       <svg viewBox="0 0 64 72"><path d="M16 32V22a16 16 0 0 1 32 0v10" fill="none" stroke="#ff9cc7" stroke-width="7" stroke-linecap="round"/><path d="M32 70 C12 56 2 46 2 34 C2 25 9 19 17 19 C24 19 29 23 32 28 C35 23 40 19 47 19 C55 19 62 25 62 34 C62 46 52 56 32 70Z" fill="#e8559a"/><circle cx="32" cy="40" r="5" fill="#fff"/><rect x="30" y="42" width="4" height="10" rx="2" fill="#fff"/></svg>
@@ -372,7 +255,6 @@
     <p class="err" id="pwErr" role="alert"></p>
     <button class="btn" type="submit">Otkljucaj ♡</button>
   </form>
-
   <form class="pane" id="dateForm" hidden novalidate>
     <h3>Kad se vidimo?</h3>
     <div class="row">
@@ -388,128 +270,32 @@
     </div>
     <div class="share" id="share" hidden>
       <p><b>Sacuvano!</b> Posalji joj ovaj link da i ona vidi isto odbrojavanje:</p>
-      <div class="share-row"><input id="shareUrl" readonly aria-label="Link za dijeljenje"><button type="button" class="btn small" id="copyBtn">Kopiraj</button></div>
+      <div class="share-row"><input id="shareUrl" readonly aria-label="Link za dijeljenje"><button type="button" class="btn" id="copyBtn">Kopiraj</button></div>
     </div>
   </form>
 </dialog>
 
+<script src="assets/site.js"></script>
 <script>
-(() => {
-  /* ============ podesavanja ============
-     LOZINKA: zadana je "srecica13". Za novu: otvori stranicu, u konzoli (F12) ukucaj
-     hashLozinke('nova lozinka') i dobijeni broj zalijepi ovdje umjesto postojeceg.
-     ZADANO: datum koji se prikazuje ako nema datuma u linku ni u pregledacu,
-     npr. { datum: '2026-12-24T18:00', mjesto: 'Beograd', pismo: '' } */
-  const PASSWORD_HASH = 6534432876862957;
-  const ZADANO = { datum: '', mjesto: '', pismo: '' };
-  /* ===================================== */
+(async () => {
+  /* Tajni kutak: lozinka je "srecica13". Za novu: u konzoli (F12) ukucaj hashLozinke('nova') i zalijepi broj ovdje. */
+  const ADMIN_HASH = 6534432876862957;
+  const { $, pl, pad, fmtN, DAY, clamp, rnd } = K;
+  const hashPw = s => K.cyrb53(String(s).trim().toLowerCase());
+  window.hashLozinke = s => { const h = hashPw(s); console.log('ADMIN_HASH =', h); return h; };
 
-  const KEY = 'irena-odbrojavanje-v1';
-  const DAY = 864e5;
-  const $ = id => document.getElementById(id);
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const NS = 'http://www.w3.org/2000/svg';
-  const HEART_D = 'M50 86 C20 62 4 46 4 27 C4 13 15 4 28 4 C38 4 46 10 50 18 C54 10 62 4 72 4 C85 4 96 13 96 27 C96 46 80 62 50 86Z';
-  const palettes = {
-    pink:  ['#ffb3d4', '#ff9cc7', '#ffc8e0', '#f7a8d8', '#ffd6e8'],
-    deep:  ['#ff7fb3', '#f56aa6', '#ff94c2', '#e8559a', '#ffa6cf'],
-    light: ['#ffd6e8', '#ffe3ef', '#ffc8e0', '#fbd0e6', '#ffe9f3'],
-  };
-  palettes.mix = [...palettes.pink, ...palettes.deep, ...palettes.light];
-  const rnd = (a, b) => a + Math.random() * (b - a);
-  const pick = arr => arr[Math.floor(Math.random() * arr.length)];
-  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
-  const el = (tag, attrs) => { const n = document.createElementNS(NS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); return n; };
-
-  // ---------- hydrangeas (same recipe as the first page) ----------
-  function hydrangea(colors) {
-    const svg = el('svg', { viewBox: '0 0 200 200' });
-    [[-50, 60], [40, 70], [-10, 85]].forEach(([dx, rot]) => {
-      svg.appendChild(el('path', {
-        d: 'M0 0 C18 -22 52 -22 70 0 C52 22 18 22 0 0Z',
-        fill: '#9fd6a8', stroke: '#7cc08a', 'stroke-width': 1.5,
-        transform: `translate(${100 + dx * 0.4} 140) rotate(${dx < 0 ? 180 - rot / 2 : rot / 2})`
-      }));
-    });
-    const florets = [];
-    for (let i = 0; i < 70; i++) {
-      const a = Math.random() * Math.PI * 2, r = Math.sqrt(Math.random()) * 62;
-      florets.push({ x: 100 + Math.cos(a) * r, y: 92 + Math.sin(a) * r * 0.85, s: rnd(9, 13), rot: rnd(0, 90) });
-    }
-    florets.sort((p, q) => p.y - q.y);
-    florets.forEach(f => {
-      const g = el('g', { transform: `translate(${f.x} ${f.y}) rotate(${f.rot})` });
-      const c = pick(colors);
-      for (let k = 0; k < 4; k++) {
-        g.appendChild(el('ellipse', { cx: 0, cy: -f.s * 0.55, rx: f.s * 0.42, ry: f.s * 0.6, fill: c, stroke: '#fff', 'stroke-width': .8, 'stroke-opacity': .7, transform: `rotate(${k * 90})` }));
-      }
-      g.appendChild(el('circle', { r: f.s * 0.16, fill: '#fff7fb' }));
-      svg.appendChild(g);
-    });
-    return svg;
-  }
-  document.querySelectorAll('[data-bloom]').forEach(n => n.appendChild(hydrangea(palettes[n.dataset.bloom])));
-
-  let hgN = 0;
-  document.querySelectorAll('[data-heart]').forEach(n => {
-    const id = 'hh' + (hgN++);
-    n.innerHTML = `<svg viewBox="0 0 100 90"><defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffa6cf"/><stop offset="1" stop-color="#ff5c9e"/></linearGradient></defs>
-      <path d="${HEART_D}" fill="url(#${id})"/><ellipse cx="28" cy="22" rx="9" ry="6" fill="#fff" opacity=".55" transform="rotate(-30 28 22)"/></svg>`;
-  });
-
-  // ---------- helpers ----------
-  const pl = (n, one, few, many) => { const a = Math.abs(n) % 100, b = a % 10; if (a > 10 && a < 15) return many; if (b === 1) return one; if (b >= 2 && b <= 4) return few; return many; };
-  const pad = n => String(n).padStart(2, '0');
-  const fmtN = n => { try { return n.toLocaleString('sr-Latn'); } catch { return String(n); } };
-  const midnight = t => { const d = new Date(t); d.setHours(0, 0, 0, 0); return d.getTime(); };
-  const sleepsUntil = (t, now) => Math.round((midnight(t) - midnight(now)) / DAY);
-  function fmtDate(t) {
-    try {
-      const d = new Date(t);
-      const day = new Intl.DateTimeFormat('sr-Latn', { weekday: 'long', day: 'numeric', month: 'long' }).format(d);
-      return `${day} u ${pad(d.getHours())}:${pad(d.getMinutes())}`;
-    } catch { return new Date(t).toLocaleString(); }
-  }
-  const cyrb53 = (str, seed = 0) => {
-    let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
-    for (let i = 0, ch; i < str.length; i++) { ch = str.charCodeAt(i); h1 = Math.imul(h1 ^ ch, 2654435761); h2 = Math.imul(h2 ^ ch, 1597334677); }
-    h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507); h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
-    h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507); h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
-    return 4294967296 * (2097151 & h2) + (h1 >>> 0);
-  };
-  const hashPw = s => cyrb53(String(s).trim().toLowerCase());
-  window.hashLozinke = s => { const h = hashPw(s); console.log('PASSWORD_HASH =', h); return h; };
-  const b64e = s => { let bin = ''; new TextEncoder().encode(s).forEach(b => bin += String.fromCharCode(b)); return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); };
-  const b64d = s => { try { const bin = atob(s.replace(/-/g, '+').replace(/_/g, '/')); return new TextDecoder().decode(Uint8Array.from(bin, c => c.charCodeAt(0))); } catch { return ''; } };
-  const restart = (node, cls) => { if (reduce) return; node.classList.remove(cls); void node.offsetWidth; node.classList.add(cls); };
-
-  // ---------- state: link (#...) > this browser > ZADANO ----------
-  const EMPTY = { t: 0, s: 0, p: '', l: '' };
-  function load() {
-    const h = new URLSearchParams(location.hash.slice(1));
-    const d = Number(h.get('d'));
-    if (d > 0) return { t: d, s: Number(h.get('s')) || 0, p: h.get('p') || '', l: h.get('l') ? b64d(h.get('l')) : '' };
-    try { const j = JSON.parse(localStorage.getItem(KEY)); if (j && j.t > 0) return { ...EMPTY, ...j }; } catch {}
-    if (ZADANO.datum) { const t = new Date(ZADANO.datum).getTime(); if (t > 0) return { t, s: 0, p: ZADANO.mjesto || '', l: ZADANO.pismo || '' }; }
-    return { ...EMPTY };
-  }
-  function linkHash(st) {
-    const q = new URLSearchParams();
-    q.set('d', st.t); if (st.s) q.set('s', st.s); if (st.p) q.set('p', st.p); if (st.l) q.set('l', b64e(st.l));
-    return '#' + q.toString();
-  }
-  function persist() {
-    try { if (state.t) localStorage.setItem(KEY, JSON.stringify(state)); else localStorage.removeItem(KEY); } catch {}
-    const url = state.t ? linkHash(state) : location.pathname + location.search;
+  let state = await K.meeting();
+  const persist = () => {
+    K.saveMeeting(state);
+    const url = state.t ? K.meetingHash(state) : location.pathname + location.search;
     try { history.replaceState(null, '', url); } catch { if (state.t) location.hash = url; }
-  }
-  let state = load();
-  addEventListener('hashchange', () => { state = load(); envelopeOpen = false; render(true); });
+  };
+  addEventListener('hashchange', async () => { state = await K.meeting(); envelopeOpen = false; render(true); });
 
   // ---------- road ----------
   const road = $('roadPath'), L = road.getTotalLength();
   const meetAt = road.getPointAtLength(L / 2);
-  const bloom = hydrangea(palettes.mix);
+  const bloom = K.hydrangea(K.palettes.mix);
   Object.entries({ x: meetAt.x - 34, y: meetAt.y - 46, width: 68, height: 68 }).forEach(([k, v]) => bloom.setAttribute(k, v));
   $('meet').appendChild(bloom);
   const GAP = 40;
@@ -523,7 +309,7 @@
   }
 
   // ---------- stats ----------
-  const heartIcon = c => `<svg class="icon" viewBox="0 0 100 90" aria-hidden="true"><path d="${HEART_D}" fill="${c}"/></svg>`;
+  const heartIcon = c => `<svg class="icon" viewBox="0 0 100 90" aria-hidden="true"><path d="${K.HEART_D}" fill="${c}"/></svg>`;
   const starIcon = c => `<svg class="icon" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 4 L62 38 L98 38 L69 59 L80 94 L50 73 L20 94 L31 59 L2 38 L38 38Z" fill="${c}"/></svg>`;
   const moonIcon = c => `<svg class="icon" viewBox="0 0 100 100" aria-hidden="true"><path d="M62 8 A42 42 0 1 0 92 66 A34 34 0 1 1 62 8Z" fill="${c}"/></svg>`;
   $('stats').innerHTML = [
@@ -543,9 +329,11 @@
     sl <= 14 ? 'jos malo, izdrzi hortenzijice ♡' :
     sl <= 31 ? 'manje od mjesec dana, brojim svaki' :
     'daleko je, ali svaki dan je jedan manje ♡';
+  const PIN = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-6.5 7-12a7 7 0 0 0-14 0c0 5.5 7 12 7 12Z" fill="#ff7fb3"/><circle cx="12" cy="10" r="2.6" fill="#fff"/></svg>';
+  const CAL = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="4" fill="#ff7fb3"/><rect x="3" y="5" width="18" height="5" rx="2" fill="#e8559a"/><path d="M12 18c-3-2-4.4-3.3-4.4-5a1.9 1.9 0 0 1 4.4-.9 1.9 1.9 0 0 1 4.4.9c0 1.7-1.4 3-4.4 5Z" fill="#fff"/></svg>';
 
   let lastSr = '', celebrateTimer = 0, envelopeOpen = false;
-  const setNum = (id, val, cls = 'flip') => { const n = $(id); if (n.textContent !== val) { n.textContent = val; restart(n, cls); } };
+  const setNum = (id, val, cls = 'flip') => { const n = $(id); if (n.textContent !== val) { n.textContent = val; K.restart(n, cls); } };
 
   function render(force) {
     const now = Date.now();
@@ -554,22 +342,19 @@
     const prev = document.body.dataset.state;
     document.body.dataset.state = st;
 
-    // when + where
     const when = $('when');
     if (t && st !== 'past') {
-      const pin = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-6.5 7-12a7 7 0 0 0-14 0c0 5.5 7 12 7 12Z" fill="#ff7fb3"/><circle cx="12" cy="10" r="2.6" fill="#fff"/></svg>';
-      const cal = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="4" fill="#ff7fb3"/><rect x="3" y="5" width="18" height="5" rx="2" fill="#e8559a"/><path d="M12 18c-3-2-4.4-3.3-4.4-5a1.9 1.9 0 0 1 4.4-.9 1.9 1.9 0 0 1 4.4.9c0 1.7-1.4 3-4.4 5Z" fill="#fff"/></svg>';
-      const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-      when.innerHTML = `<span class="chip">${cal}${esc(fmtDate(t))}</span>` + (state.p ? `<span class="chip">${pin}${esc(state.p)}</span>` : '');
+      when.innerHTML = `<span class="chip">${CAL}${K.esc(K.fmtDate(t))}</span>` + (state.p ? `<span class="chip">${PIN}${K.esc(state.p)}</span>` : '');
       when.hidden = false;
     } else when.hidden = true;
 
     let sr = '';
     if (st === 'counting') {
       const days = Math.floor(diff / DAY), hrs = Math.floor(diff / 36e5) % 24, min = Math.floor(diff / 6e4) % 60, sec = Math.floor(diff / 1e3) % 60;
-      const sl = sleepsUntil(t, now);
+      const sl = K.sleepsUntil(t, now);
+      const dL = pl(days, 'dan', 'dana', 'dana');
       setNum('days', String(days), 'pop');
-      $('daysL').textContent = pl(days, 'dan', 'dana', 'dana');
+      $('daysL').textContent = dL;
       setNum('hrs', pad(hrs)); $('hrsL').textContent = pl(hrs, 'sat', 'sata', 'sati');
       setNum('min', pad(min)); $('minL').textContent = pl(min, 'minut', 'minuta', 'minuta');
       setNum('sec', pad(sec)); $('secL').textContent = pl(sec, 'sekunda', 'sekunde', 'sekundi');
@@ -577,11 +362,11 @@
       $('stSleep').textContent = fmtN(sl); $('stSleepL').textContent = pl(sl, 'spavanje', 'spavanja', 'spavanja') + ' do tebe';
       $('stHours').textContent = fmtN(Math.floor(diff / 36e5));
       $('stBeats').textContent = fmtN(Math.floor(diff / 1000 * 1.2));
-      $('title').textContent = sl <= 1 ? (sl === 0 ? 'Danas!!!' : 'Sutra!!!') : 'Jos malo...';
+      $('title').textContent = sl === 0 ? 'Danas!!!' : sl === 1 ? 'Sutra!!!' : 'Jos malo...';
       $('sub').textContent = 'i opet si u mom zagrljaju';
       $('countEyebrow').textContent = 'do naseg sljedeceg vidjanja';
-      document.title = `Jos ${days} ${pl(days, 'dan', 'dana', 'dana')} ♡`;
-      sr = `Jos ${days} ${pl(days, 'dan', 'dana', 'dana')}, ${hrs} ${pl(hrs, 'sat', 'sata', 'sati')} i ${min} ${pl(min, 'minut', 'minuta', 'minuta')}.`;
+      document.title = `Jos ${days} ${dL} ♡`;
+      sr = `Jos ${days} ${dL}, ${hrs} ${pl(hrs, 'sat', 'sata', 'sati')} i ${min} ${pl(min, 'minut', 'minuta', 'minuta')}.`;
     } else if (st === 'today') {
       $('title').textContent = 'Danas!!!';
       $('sub').textContent = 'konacno, dodji mi vec ♡';
@@ -601,7 +386,6 @@
     }
     if (sr !== lastSr || force) { $('srSummary').textContent = sr; lastSr = sr; }
 
-    // road progress
     let p = 0.04;
     if (st === 'counting') {
       const start = state.s && state.s < t ? state.s : t - 30 * DAY;
@@ -613,7 +397,6 @@
       st === 'counting' ? `presli smo <b>${Math.floor(p * 100)}%</b> puta jedno do drugog` :
       st === 'today' ? '<b>stigli smo</b> jedno do drugog ♡' : '<b>bili smo zajedno</b> ♡ cekamo novi put';
 
-    // letter
     $('letterSec').hidden = !state.l;
     $('letterText').textContent = state.l;
     const canOpen = st === 'today' || st === 'past';
@@ -623,10 +406,9 @@
       ? (envelopeOpen ? 'samo za tebe ♡' : 'pecat je pao... pritisni da otvoris ♡')
       : 'zapecaceno do dana kad se vidimo';
 
-    // party mode
-    if (st === 'today' && !celebrateTimer && !reduce) {
-      celebrateTimer = setInterval(() => burst(rnd(W * .1, W * .9), rnd(H * .1, H * .6), 22), 900);
-      if (prev && prev !== 'today') for (let i = 0; i < 6; i++) setTimeout(() => burst(rnd(0, W), rnd(0, H * .7), 30), i * 150);
+    if (st === 'today' && !celebrateTimer && !K.reduce) {
+      celebrateTimer = setInterval(() => { const { W, H } = K.size(); K.burst(rnd(W * .1, W * .9), rnd(H * .1, H * .6), 22); }, 900);
+      if (prev && prev !== 'today') { const { W, H } = K.size(); for (let i = 0; i < 6; i++) setTimeout(() => K.burst(rnd(0, W), rnd(0, H * .7), 30), i * 150); }
     } else if (st !== 'today' && celebrateTimer) { clearInterval(celebrateTimer); celebrateTimer = 0; }
   }
 
@@ -634,38 +416,17 @@
   function tick() { render(); clearTimeout(timer); timer = setTimeout(tick, 1000 - (Date.now() % 1000) + 10); }
   document.addEventListener('visibilitychange', () => { if (!document.hidden) tick(); });
 
-  // ---------- notes ----------
-  const notes = [
-    'Jedva cekam da te vidim.',
-    'Svaki dan bez tebe traje duplo.',
-    'Brojim sekunde. Bukvalno, vidi gore.',
-    'Sacuvaj mi jedan dugi zagrljaj.',
-    'Spremi se za milion poljubaca.',
-    'Ti si moja hortenzijica.',
-    'Kad te vidim, sve je opet na mjestu.',
-  ];
-  let ni = 0;
-  const note = $('note');
-  $('heart').addEventListener('click', e => {
-    ni = (ni + 1) % notes.length;
-    note.classList.add('swap');
-    setTimeout(() => { note.textContent = notes[ni]; note.classList.remove('swap'); }, reduce ? 0 : 250);
-    const r = e.currentTarget.getBoundingClientRect();
-    burst(r.left + r.width / 2, r.top + r.height / 2, 28);
-  });
-
   // ---------- envelope ----------
   $('envelope').addEventListener('click', e => {
     const st = document.body.dataset.state;
-    const r = e.currentTarget.getBoundingClientRect();
     if (st === 'today' || st === 'past') {
       envelopeOpen = !envelopeOpen;
-      if (envelopeOpen) burst(r.left + r.width / 2, r.top + r.height / 3, 34);
+      if (envelopeOpen) { const r = e.currentTarget.getBoundingClientRect(); K.burst(r.left + r.width / 2, r.top + r.height / 3, 34); }
       render();
       return;
     }
-    restart(e.currentTarget, 'nope');
-    const sl = state.t ? sleepsUntil(state.t, Date.now()) : 0;
+    K.restart(e.currentTarget, 'nope');
+    const sl = state.t ? K.sleepsUntil(state.t, Date.now()) : 0;
     $('letterHint').textContent = state.t
       ? `ne jos! ${sl <= 0 ? 'jos par sati' : `jos ${sl} ${pl(sl, 'spavanje', 'spavanja', 'spavanja')}`} pa ga mozes otvoriti ♡`
       : 'ne jos! ♡';
@@ -674,40 +435,39 @@
   // ---------- secret corner ----------
   const dlg = $('admin'), lockForm = $('lockForm'), dateForm = $('dateForm');
   let unlocked = false;
-  try { unlocked = sessionStorage.getItem(KEY + '-ok') === '1'; } catch {}
+  try { unlocked = sessionStorage.getItem('irena-kutak') === '1'; } catch {}
+  function showShare(on) { $('share').hidden = !on; if (on) $('shareUrl').value = location.href; }
   function showPane() {
     lockForm.hidden = unlocked; dateForm.hidden = !unlocked;
     $('pwErr').textContent = ''; $('dateErr').textContent = '';
-    if (unlocked) {
-      if (state.t) {
-        const d = new Date(state.t);
-        $('fDate').value = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-        $('fTime').value = `${pad(d.getHours())}:${pad(d.getMinutes())}`;
-      } else { $('fDate').value = ''; $('fTime').value = '18:00'; }
-      $('fPlace').value = state.p; $('fLetter').value = state.l;
-      showShare(!!state.t);
-    }
+    if (!unlocked) return;
+    if (state.t) {
+      const d = new Date(state.t);
+      $('fDate').value = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+      $('fTime').value = `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    } else { $('fDate').value = ''; $('fTime').value = '18:00'; }
+    $('fPlace').value = state.p; $('fLetter').value = state.l;
+    showShare(!!state.t && location.hash.length > 1);
   }
-  function showShare(on) { $('share').hidden = !on; if (on) $('shareUrl').value = location.href; }
   $('lockBtn').addEventListener('click', () => {
     showPane();
     dlg.showModal();
-    setTimeout(() => (unlocked ? $('fDate') : $('pw')).focus(), 50);
+    setTimeout(() => (unlocked ? $('fDate') : $('pw')).focus(), 60);
   });
   $('adminClose').addEventListener('click', () => dlg.close());
   dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
 
   lockForm.addEventListener('submit', e => {
     e.preventDefault();
-    if (hashPw($('pw').value) === PASSWORD_HASH) {
+    if (hashPw($('pw').value) === ADMIN_HASH) {
       unlocked = true;
-      try { sessionStorage.setItem(KEY + '-ok', '1'); } catch {}
+      try { sessionStorage.setItem('irena-kutak', '1'); } catch {}
       $('pw').value = '';
       showPane();
       $('fDate').focus();
     } else {
-      $('pwErr').textContent = pick(['Ups, nije to 🙈', 'Irena, ne varaj 😄', 'Pokusaj opet ♡', 'Hmm, ne bas...']);
-      restart(dlg, 'shake');
+      $('pwErr').textContent = K.pick(['Ups, nije to 🙈', 'Irena, ne varaj 😄', 'Pokusaj opet ♡', 'Hmm, ne bas...']);
+      K.restart(dlg, 'shake');
       $('pw').select();
     }
   });
@@ -725,11 +485,12 @@
     persist();
     render(true);
     showShare(true);
-    for (let i = 0; i < 4; i++) setTimeout(() => burst(rnd(W * .2, W * .8), rnd(H * .15, H * .5), 30), i * 140);
+    const { W, H } = K.size();
+    for (let i = 0; i < 4; i++) setTimeout(() => K.burst(rnd(W * .2, W * .8), rnd(H * .15, H * .5), 30), i * 140);
   });
 
   $('clearBtn').addEventListener('click', () => {
-    state = { ...EMPTY }; envelopeOpen = false;
+    state = { ...K.EMPTY_MEETING }; envelopeOpen = false;
     persist(); render(true); showPane();
     $('dateErr').textContent = 'Datum obrisan.';
   });
@@ -741,69 +502,6 @@
     $('copyBtn').textContent = 'Kopirano ♡';
     setTimeout(() => { $('copyBtn').textContent = 'Kopiraj'; }, 1600);
   });
-
-  // ---------- the sky (same as the first page) ----------
-  const cv = $('sky'), ctx = cv.getContext('2d');
-  let W, H, dpr;
-  const resize = () => { dpr = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); };
-  resize(); addEventListener('resize', resize);
-  const colors = ['#ff8fbf', '#ffb3d4', '#e8559a', '#ff7fb3', '#ffd6e8', '#ffffff'];
-  const stars = Array.from({ length: 70 }, () => ({ x: Math.random(), y: Math.random(), r: rnd(1, 2.6), p: rnd(0, 6.28), sp: rnd(.6, 2), c: pick(['#ffffff', '#ffe3ef', '#ffd6ea']) }));
-  function newFloater(anywhere) {
-    return { x: rnd(0, W), y: anywhere ? rnd(0, H) : H + 30, s: rnd(8, 18), vy: rnd(.25, .7), sw: rnd(0, 6.28), kind: Math.random() < .6 ? 'heart' : 'star', c: pick(colors), a: rnd(.5, .9) };
-  }
-  const floaters = Array.from({ length: 22 }, () => newFloater(true));
-  let bits = [];
-  function burst(x, y, n = 18) {
-    for (let i = 0; i < n; i++) {
-      const a = rnd(0, Math.PI * 2), v = rnd(2, 7);
-      bits.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 2, s: rnd(7, 15), life: 1, kind: pick(['heart', 'star', 'star', 'heart', 'dot']), c: pick(colors), rot: rnd(0, 6.28) });
-    }
-    if (reduce) draw(0);
-  }
-  addEventListener('pointerdown', e => { if (!dlg.open) burst(e.clientX, e.clientY); });
-
-  function heart(x, y, s) {
-    ctx.beginPath();
-    ctx.moveTo(x, y + s * .35);
-    ctx.bezierCurveTo(x - s, y - s * .35, x - s * .45, y - s, x, y - s * .45);
-    ctx.bezierCurveTo(x + s * .45, y - s, x + s, y - s * .35, x, y + s * .35);
-    ctx.fill();
-  }
-  function star(x, y, s, rot = 0) {
-    ctx.beginPath();
-    for (let i = 0; i < 10; i++) {
-      const r = i % 2 ? s * .42 : s, a = rot + i * Math.PI / 5 - Math.PI / 2;
-      ctx.lineTo(x + Math.cos(a) * r, y + Math.sin(a) * r);
-    }
-    ctx.closePath(); ctx.fill();
-  }
-  function shape(kind, x, y, s, rot) {
-    if (kind === 'heart') heart(x, y, s); else if (kind === 'star') star(x, y, s * .8, rot); else { ctx.beginPath(); ctx.arc(x, y, s * .25, 0, 7); ctx.fill(); }
-  }
-  function draw(t) {
-    ctx.clearRect(0, 0, W, H);
-    stars.forEach(s => {
-      ctx.globalAlpha = .45 + .55 * Math.abs(Math.sin(s.p + t * .001 * s.sp));
-      ctx.fillStyle = s.c;
-      star(s.x * W, s.y * H, s.r * 2.2);
-    });
-    floaters.forEach((f, i) => {
-      if (!reduce) { f.y -= f.vy; f.sw += .02; }
-      if (f.y < -30) floaters[i] = newFloater(false);
-      ctx.globalAlpha = f.a; ctx.fillStyle = f.c;
-      shape(f.kind, f.x + Math.sin(f.sw) * 14, f.y, f.s, f.sw * .3);
-    });
-    bits = bits.filter(b => b.life > 0);
-    bits.forEach(b => {
-      b.x += b.vx; b.y += b.vy; b.vy += .15; b.vx *= .98; b.life -= reduce ? 1 : .016; b.rot += .1;
-      ctx.globalAlpha = Math.max(b.life, 0); ctx.fillStyle = b.c;
-      shape(b.kind, b.x, b.y, b.s, b.rot);
-    });
-    ctx.globalAlpha = 1;
-    if (!reduce) requestAnimationFrame(draw);
-  }
-  requestAnimationFrame(draw);
 
   tick();
 })();

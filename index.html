@@ -1,286 +1,324 @@
 <!doctype html>
+<html lang="sr-Latn">
+<head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Za Irenu</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#fde6f1">
+<title>♡</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 90'%3E%3Cpath d='M50 86 C20 62 4 46 4 27 C4 13 15 4 28 4 C38 4 46 10 50 18 C54 10 62 4 72 4 C85 4 96 13 96 27 C96 46 80 62 50 86Z' fill='%23ff5c9e'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Fredoka:wght@400;500;600&display=swap">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Fredoka:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<script>
+  /* Already let in on this device? Skip the gate (and go back to the page she was opening, if any). */
+  (function () {
+    try {
+      if (localStorage.getItem('irena-kljuc') === '1711121935972527') {
+        var next = sessionStorage.getItem('irena-dalje');
+        if (next) { sessionStorage.removeItem('irena-dalje'); location.replace(next); }
+        document.documentElement.classList.add('in');
+      }
+    } catch (e) {}
+  })();
+</script>
 <style>
-  /* Layout: a dreamy single column floating over a starry pink sky, hydrangea bouquets blooming at the corners */
-  :root {
-    --sky-top: #fde6f1;
-    --sky-bottom: #ffd3e6;
-    --ink: #7a2f58;
-    --ink-soft: #a85c86;
-    --rose: #ff7fb3;
-    --blush: #ffa6cf;
-    --deep: #e8559a;
-    --card: rgba(255, 255, 255, 0.62);
-    --display: "Great Vibes", "Brush Script MT", cursive;
-    --body: "Fredoka", "Trebuchet MS", system-ui, sans-serif;
-    color-scheme: light;
-  }
-  * { box-sizing: border-box; }
-  html { min-height: 100%; }
-  body {
-    min-height: 100%;
-    background: linear-gradient(180deg, var(--sky-top), var(--sky-bottom)) fixed, var(--sky-top);
-    color: var(--ink);
-    font-family: var(--body);
-    font-size: 17px;
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
-  #sky { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
-  .corner { position: fixed; width: min(42vw, 300px); pointer-events: none; z-index: 1; opacity: .95; }
-  .corner svg { width: 100%; height: auto; display: block; animation: sway 7s ease-in-out infinite; transform-origin: 50% 100%; }
-  .corner.bl { left: -40px; bottom: -40px; }
-  .corner.br { right: -40px; bottom: -40px; }
-  .corner.br svg { animation-delay: -3.5s; }
-  .corner.tr { right: -60px; top: -60px; width: min(32vw, 220px); }
-  .corner.tr svg { transform-origin: 50% 0; animation-delay: -1.7s; }
-  @keyframes sway { 0%, 100% { transform: rotate(-2.5deg); } 50% { transform: rotate(2.5deg); } }
+  /* Layout: a near-blank pink page with one input (the gate); once open, a home column — hero, "our day" counter, next-meeting teaser, photo of the day, links */
 
-  main {
-    position: relative; z-index: 2;
-    max-width: 720px; margin: 0 auto;
-    padding-inline: 16px; padding-block: 56px 160px;
-    display: flex; flex-direction: column; gap: 56px;
+  /* ---------- gate ---------- */
+  .gate { position: fixed; inset: 0; z-index: 30; display: grid; place-items: center; padding: 24px; transition: opacity .8s ease .5s, visibility 0s linear 1.3s; }
+  .in .gate { display: none; }
+  .gate-form { display: flex; flex-direction: column; align-items: center; gap: 14px; width: min(340px, 100%); margin-top: -6vh; }
+  .gate-field {
+    display: flex; align-items: center; gap: 6px; width: 100%;
+    background: rgba(255, 255, 255, .78); border: 2px solid #fff; border-radius: 999px;
+    padding: 6px 6px 6px 18px;
+    box-shadow: 0 18px 40px -18px rgba(232, 85, 154, .6);
+    transition: box-shadow .3s, transform .5s cubic-bezier(.5, -0.4, .3, 1.4), opacity .4s, border-color .3s;
+    animation: rise .9s cubic-bezier(.3, 1.4, .5, 1) both .15s;
   }
-  .hero { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 6px; }
-  .eyebrow { font-weight: 500; letter-spacing: .14em; text-transform: uppercase; font-size: 13px; color: var(--ink-soft); }
-  h1 {
-    font-family: var(--display); font-weight: 400;
-    font-size: clamp(64px, 16vw, 132px); line-height: 1.05; margin: 0;
-    background: linear-gradient(90deg, var(--rose), var(--blush), var(--deep), var(--rose));
-    background-size: 300% 100%;
+  .gate-field:focus-within { box-shadow: 0 0 0 6px rgba(255, 127, 179, .18), 0 18px 40px -18px rgba(232, 85, 154, .7); }
+  .gate-field.wrong { border-color: var(--rose); }
+  .gate-field input {
+    flex: 1; min-width: 0; border: 0; background: transparent; outline: none;
+    font: 600 22px var(--body); letter-spacing: .18em; text-align: center; color: var(--ink);
+    padding: 8px 0; caret-color: var(--deep);
+  }
+  .gate-field input::placeholder { color: var(--blush); letter-spacing: 0; }
+  .gate-go {
+    flex: none; width: 50px; height: 50px; border: 0; border-radius: 50%; cursor: pointer; padding: 12px 11px 10px;
+    background: linear-gradient(135deg, var(--rose), var(--deep)); box-shadow: 0 8px 18px -8px rgba(232, 85, 154, .9);
+    transition: transform .15s;
+  }
+  .gate-go:active { transform: scale(.9); }
+  .gate-go svg { width: 100%; height: 100%; display: block; filter: none; }
+  .gate-msg { margin: 0; min-height: 1.6em; font-size: 15px; font-weight: 500; color: var(--ink-soft); text-align: center; transition: opacity .3s; }
+  .gate-heart {
+    position: fixed; left: 50%; top: 50%; width: 160px; height: 145px; margin: -80px 0 0 -80px;
+    transform: scale(0); opacity: 0; pointer-events: none; z-index: 31;
+  }
+  .gate-heart svg { width: 100%; height: 100%; }
+  .opening .gate-field { transform: scale(.2); opacity: 0; }
+  .opening .gate-msg { opacity: 0; }
+  .opening .gate-heart { animation: bigheart 1.3s cubic-bezier(.3, 1.5, .5, 1) forwards; }
+  @keyframes bigheart { 0% { transform: scale(0); opacity: 1; } 35% { transform: scale(1.15); opacity: 1; } 55% { transform: scale(.95); } 75% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(6); opacity: 0; } }
+  .opening .gate { opacity: 0; visibility: hidden; }
+
+  /* ---------- home ---------- */
+  .home { display: none; }
+  .in .home, .opening .home { display: block; }
+  .opening .home main { animation: rise 1s cubic-bezier(.3, 1.3, .5, 1) both .7s; }
+  .opening .home .corner svg { animation: bloomIn 1.2s cubic-bezier(.3, 1.5, .5, 1) both .6s, sway 7s ease-in-out infinite 1.8s; }
+  .opening .tabbar { animation: navIn .8s cubic-bezier(.3, 1.5, .5, 1) both 1.1s; }
+  @keyframes bloomIn { from { transform: scale(0) rotate(-30deg); } }
+  @keyframes navIn { from { transform: translate(-50%, 140%); } }
+
+  .since { gap: 6px; }
+  .since-num { display: flex; align-items: baseline; justify-content: center; gap: 10px; flex-wrap: wrap; line-height: 1; margin-top: 4px; }
+  .since-num b {
+    font-weight: 700; font-size: clamp(84px, 26vw, 150px); letter-spacing: -.03em; font-variant-numeric: tabular-nums;
+    background: linear-gradient(160deg, #ff9cc7 10%, var(--deep) 60%, var(--deeper));
     -webkit-background-clip: text; background-clip: text; color: transparent;
-    animation: shimmer 8s linear infinite;
-    filter: drop-shadow(0 4px 14px rgba(255, 127, 179, .35));
-    text-wrap: balance;
+    filter: drop-shadow(0 10px 22px rgba(232, 85, 154, .3));
   }
-  @keyframes shimmer { to { background-position: 300% 0; } }
-  .sub { font-size: 20px; color: var(--ink-soft); margin: 0; max-width: 32ch; text-wrap: balance; }
-  .hero-bloom { width: min(260px, 70vw); margin-top: 8px; animation: bob 5s ease-in-out infinite; }
-  @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  .since-num span { font-family: var(--display); font-size: clamp(42px, 11vw, 60px); color: var(--rose); }
+  .since-sub { margin: 0; font-size: 19px; font-weight: 500; max-width: 30ch; text-wrap: balance; }
+  .chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 8px; }
+  .chip { background: rgba(255, 255, 255, .85); border: 2px solid var(--line); border-radius: 999px; padding: 4px 14px; font-size: 15px; font-weight: 500; font-variant-numeric: tabular-nums; }
+  .chip b { color: var(--deep); font-weight: 600; }
 
-  h2 { font-family: var(--display); font-weight: 400; font-size: clamp(44px, 10vw, 60px); line-height: 1.1; margin: 0; text-align: center; color: var(--rose); text-wrap: balance; }
+  .teaser { text-decoration: none; color: inherit; transition: transform .25s; gap: 4px; }
+  .teaser:hover { transform: translateY(-4px) rotate(-.6deg); }
+  .teaser-big { font-family: var(--display); font-size: clamp(54px, 15vw, 84px); line-height: 1.05; color: var(--deep); margin: 2px 0; }
+  .teaser-big b { font-family: var(--body); font-weight: 700; font-size: .95em; margin-right: .12em; }
+  .more { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; color: var(--deep); font-size: 15px; margin-top: 6px; }
+  .more::after { content: "→"; transition: transform .2s; }
+  .teaser:hover .more::after, .door:hover .more::after { transform: translateX(4px); }
 
-  .love {
-    background: var(--card); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 255, 255, .9); border-radius: 32px;
-    box-shadow: 0 18px 50px -20px rgba(232, 85, 154, .55);
-    padding: 32px 24px; text-align: center;
-    display: flex; flex-direction: column; align-items: center; gap: 18px;
+  .memory { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+  .memory .polaroid { width: min(300px, 78vw); transform: rotate(-3deg); position: relative; transition: transform .35s cubic-bezier(.3, 1.6, .5, 1); }
+  .memory .polaroid:hover { transform: rotate(0) scale(1.03); }
+  .memory .polaroid::before {
+    content: ""; position: absolute; top: -14px; left: 50%; width: 96px; height: 28px; margin-left: -48px;
+    background: rgba(255, 182, 213, .75); border-radius: 4px; transform: rotate(4deg);
+    box-shadow: 0 2px 4px rgba(122, 47, 88, .1);
   }
-  .heart-btn {
-    border: 0; background: none; cursor: pointer; padding: 0;
-    width: 120px; height: 110px; animation: beat 1.4s ease-in-out infinite;
-    border-radius: 24px;
-  }
-  .heart-btn:focus-visible { outline: 3px dashed var(--deep); outline-offset: 6px; }
-  .heart-btn svg { width: 100%; height: 100%; filter: drop-shadow(0 8px 16px rgba(255, 127, 179, .5)); }
-  @keyframes beat { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.12); } 30% { transform: scale(.97); } 45% { transform: scale(1.08); } }
-  .note { font-size: 22px; font-weight: 500; min-height: 3.2em; max-width: 30ch; margin: 0; text-wrap: balance; transition: opacity .3s, transform .3s; }
-  .note.swap { opacity: 0; transform: translateY(6px) scale(.98); }
-  .hint { font-size: 14px; color: var(--ink-soft); margin: 0; }
+  .memory .polaroid img { aspect-ratio: 4 / 5; object-fit: cover; }
 
-  .reasons { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
-  .reason {
-    background: var(--card); border-radius: 24px; padding: 20px;
-    border: 2px solid rgba(255, 255, 255, .9);
-    display: flex; flex-direction: column; gap: 6px; min-width: 0;
+  .doors { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+  .door {
+    background: var(--card); border: 2px solid var(--line); border-radius: 26px; padding: 20px 18px;
+    text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 4px; min-width: 0;
+    box-shadow: 0 14px 34px -22px rgba(232, 85, 154, .7);
     transition: transform .25s;
   }
-  .reason:hover { transform: translateY(-4px) rotate(-1deg); }
-  .reason .icon { width: 34px; height: 34px; }
-  .reason b { font-weight: 600; font-size: 18px; }
-  .reason span { color: var(--ink-soft); }
-
-  .flower-fact { text-align: center; max-width: 52ch; margin: 0 auto; color: var(--ink-soft); }
-  .flower-fact b { color: var(--ink); font-weight: 600; }
-
-  footer { text-align: center; }
-  footer small { color: var(--ink-soft); font-size: 14px; }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation: none !important; transition: none !important; }
-  }
+  .door:hover { transform: translateY(-4px) rotate(-1deg); }
+  .door .ico { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; color: #fff; margin-bottom: 6px; background: linear-gradient(135deg, var(--rose), var(--deep)); box-shadow: 0 8px 16px -8px rgba(232, 85, 154, .9); }
+  .door .ico svg { width: 24px; height: 24px; }
+  .door b { font-size: 19px; font-weight: 600; }
+  .door span { color: var(--ink-soft); font-size: 15px; line-height: 1.4; }
 </style>
-
+</head>
+<body data-calm>
 <canvas id="sky" aria-hidden="true"></canvas>
-<div class="corner bl" aria-hidden="true" data-bloom="pink"></div>
-<div class="corner br" aria-hidden="true" data-bloom="deep"></div>
-<div class="corner tr" aria-hidden="true" data-bloom="light"></div>
 
-<main>
-  <section class="hero">
-    <span class="eyebrow">✧ mali sajt samo za ✧</span>
-    <h1>Irenu Knezevic</h1>
-    <p class="sub">najljepsa cura na svijetu</p>
-    <div class="hero-bloom" aria-hidden="true" data-bloom="mix"></div>
-  </section>
+<!-- the gate: just one input -->
+<section class="gate" id="gate" data-noburst>
+  <form class="gate-form" id="gateForm" autocomplete="off">
+    <label class="sr-only" for="pw">Lozinka</label>
+    <div class="gate-field" id="gateField">
+      <input id="pw" type="password" inputmode="decimal" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="go" placeholder="♡" aria-describedby="gateMsg">
+      <button class="gate-go" type="submit" aria-label="Udji">
+        <svg viewBox="0 0 100 90" aria-hidden="true"><path d="M50 86 C20 62 4 46 4 27 C4 13 15 4 28 4 C38 4 46 10 50 18 C54 10 62 4 72 4 C85 4 96 13 96 27 C96 46 80 62 50 86Z" fill="#fff"/></svg>
+      </button>
+    </div>
+    <p class="gate-msg" id="gateMsg" role="status"></p>
+  </form>
+</section>
+<div class="gate-heart" aria-hidden="true" data-heart></div>
 
-  <section class="love" aria-live="polite">
-    <h2>Pritisni srce</h2>
-    <button class="heart-btn" id="heart" aria-label="Prikazi poruku">
-      <svg viewBox="0 0 100 90"><defs><linearGradient id="hg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffa6cf"/><stop offset="1" stop-color="#ff5c9e"/></linearGradient></defs>
-        <path d="M50 86 C20 62 4 46 4 27 C4 13 15 4 28 4 C38 4 46 10 50 18 C54 10 62 4 72 4 C85 4 96 13 96 27 C96 46 80 62 50 86Z" fill="url(#hg)"/>
-        <ellipse cx="28" cy="22" rx="9" ry="6" fill="#fff" opacity=".55" transform="rotate(-30 28 22)"/></svg>
-    </button>
-    <p class="note" id="note">Ti si moja srecica.</p>
-    <p class="hint"> ♡</p>
-  </section>
+<!-- home -->
+<div class="home" id="home">
+  <div class="corner bl" aria-hidden="true" data-bloom="pink"></div>
+  <div class="corner br" aria-hidden="true" data-bloom="deep"></div>
+  <div class="corner tr" aria-hidden="true" data-bloom="light"></div>
 
-  <section style="display:flex;flex-direction:column;gap:24px">
-    <h2>Zasto si mi omiljena</h2>
-    <div class="reasons" id="reasons"></div>
-  </section>
+  <main>
+    <section class="hero">
+      <span class="eyebrow">✧ dobrodosla ✧</span>
+      <h1>Irena</h1>
+      <p class="sub">mali svijet samo za nas dvoje</p>
+    </section>
 
-  <p class="flower-fact">Hortenzije su svudje jer si ti moja <b>hortenzijica</b></p>
+    <section class="card since" aria-labelledby="sinceLbl">
+      <span class="eyebrow" id="sinceLbl">nas dan · 16. avgust 2026.</span>
+      <div class="since-num"><b id="sinceDays">0</b><span id="sinceL">dana</span></div>
+      <p class="since-sub" id="sinceSub">i svaki je bio ljepsi od prethodnog ♡</p>
+      <div class="chips" id="sinceChips"></div>
+    </section>
 
-  <footer>
-    <small>pritisni bilo gdje za zvjezdice i srca ti si moje srce malo</small>
-  </footer>
-</main>
+    <a class="card teaser" href="odbrojavanje.html" id="teaser">
+      <span class="eyebrow">do sljedeceg vidjanja</span>
+      <p class="teaser-big" id="teaserBig">uskoro...</p>
+      <p class="hint" id="teaserWhen">datum stize uskoro ♡</p>
+      <span class="more">odbrojavanje</span>
+    </a>
 
+    <section class="memory" id="memory" hidden>
+      <h2>Uspomena dana</h2>
+      <a class="polaroid" id="memoryLink" href="slike.html">
+        <img id="memoryImg" alt="" loading="lazy">
+        <span class="cap" id="memoryCap"></span>
+        <span class="date" id="memoryDate"></span>
+      </a>
+      <p class="hint">svaki dan druga ♡</p>
+    </section>
+
+    <section class="doors" aria-label="Stranice">
+      <a class="door" href="za-irenu.html">
+        <span class="ico"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 20.5C6 16.3 3 13.2 3 9.2 3 6.4 5.1 4.5 7.6 4.5c1.9 0 3.4 1.1 4.4 2.7 1-1.6 2.5-2.7 4.4-2.7 2.5 0 4.6 1.9 4.6 4.7 0 4-3 7.1-9 11.3Z"/></svg></span>
+        <b>Za tebe</b><span>male poruke i zasto si mi omiljena</span>
+        <span class="more">otvori</span>
+      </a>
+      <a class="door" href="odbrojavanje.html">
+        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 3h11M6.5 21h11M7.5 3v3.2c0 1.5.8 2.4 2 3.4L12 12l2.5-2.4c1.2-1 2-1.9 2-3.4V3M7.5 21v-3.2c0-1.5.8-2.4 2-3.4L12 12l2.5 2.4c1.2 1 2 1.9 2 3.4V21"/></svg></span>
+        <b>Odbrojavanje</b><span>koliko jos do nas</span>
+        <span class="more">otvori</span>
+      </a>
+      <a class="door" href="slike.html">
+        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="3.5"/><path d="M8.5 6 10 3.8h4L15.5 6"/><circle cx="12" cy="13" r="3.2"/></svg></span>
+        <b>Nase slike</b><span id="doorPhotos">nase uspomene</span>
+        <span class="more">otvori</span>
+      </a>
+    </section>
+
+    <footer class="site">
+      <small>pritisni bilo gdje za zvjezdice i srca ♡</small>
+      <button class="lock-link" type="button" data-lock>
+        <svg viewBox="0 0 16 18" aria-hidden="true"><path d="M4 8V5.5a4 4 0 0 1 8 0V8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><rect x="1" y="8" width="14" height="10" rx="3" fill="currentColor"/></svg>
+        zakljucaj
+      </button>
+    </footer>
+  </main>
+  <nav class="tabbar" data-page="pocetna"></nav>
+</div>
+
+<script src="slike.js"></script>
+<script src="assets/site.js"></script>
 <script>
 (() => {
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const NS = 'http://www.w3.org/2000/svg';
-  const palettes = {
-    pink:  ['#ffb3d4', '#ff9cc7', '#ffc8e0', '#f7a8d8', '#ffd6e8'],
-    deep:  ['#ff7fb3', '#f56aa6', '#ff94c2', '#e8559a', '#ffa6cf'],
-    light: ['#ffd6e8', '#ffe3ef', '#ffc8e0', '#fbd0e6', '#ffe9f3'],
-  };
-  palettes.mix = [...palettes.pink, ...palettes.deep, ...palettes.light];
-  const rnd = (a, b) => a + Math.random() * (b - a);
-  const pick = arr => arr[Math.floor(Math.random() * arr.length)];
-  const el = (tag, attrs) => { const n = document.createElementNS(NS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); return n; };
+  const { $, pl, fmtN, DAY } = K;
+  const root = document.documentElement;
+  const OUR_DAY = new Date(2026, 7, 16); // 16. 8. 2026.
 
-  // A hydrangea: leaves, then a dome of tiny four-petal florets, back ones darker
-  function hydrangea(colors) {
-    const svg = el('svg', { viewBox: '0 0 200 200' });
-    [[-50, 60], [40, 70], [-10, 85]].forEach(([dx, rot]) => {
-      svg.appendChild(el('path', {
-        d: 'M0 0 C18 -22 52 -22 70 0 C52 22 18 22 0 0Z',
-        fill: '#9fd6a8', stroke: '#7cc08a', 'stroke-width': 1.5,
-        transform: `translate(${100 + dx * 0.4} 140) rotate(${dx < 0 ? 180 - rot / 2 : rot / 2})`
-      }));
+  // ---------- gate ----------
+  const PASS_HASH = 1711121935972527;
+  // "16.8.2026", "16.08.2026.", "16/8/2026", "16-08-2026" ... all count
+  const norm = s => String(s).trim().toLowerCase().replace(/\s+/g, '').replace(/[\/\-,]/g, '.').replace(/\.+$/, '')
+    .split('.').map(p => p.replace(/^0+(?=\d)/, '')).join('.');
+  const field = $('gateField'), pw = $('pw'), msg = $('gateMsg');
+  let wrong = 0;
+  const nopes = ['hmm, nije to ♡', 'probaj opet 🙈', 'skoro... ili ne ♡', 'ne, ne, ne 😄'];
+
+  if (!root.classList.contains('in')) {
+    document.title = '♡';
+    setTimeout(() => pw.focus({ preventScroll: true }), 400);
+    pw.addEventListener('input', () => {
+      field.classList.remove('wrong');
+      if (!K.reduce && pw.value) { const r = field.getBoundingClientRect(); K.burst(r.left + r.width / 2 + K.rnd(-60, 60), r.top + 4, 3, ['heart']); }
     });
-    const florets = [];
-    for (let i = 0; i < 70; i++) {
-      const a = Math.random() * Math.PI * 2, r = Math.sqrt(Math.random()) * 62;
-      florets.push({ x: 100 + Math.cos(a) * r, y: 92 + Math.sin(a) * r * 0.85, s: rnd(9, 13), rot: rnd(0, 90) });
-    }
-    florets.sort((p, q) => p.y - q.y);
-    florets.forEach(f => {
-      const g = el('g', { transform: `translate(${f.x} ${f.y}) rotate(${f.rot})` });
-      const c = pick(colors);
-      for (let k = 0; k < 4; k++) {
-        g.appendChild(el('ellipse', { cx: 0, cy: -f.s * 0.55, rx: f.s * 0.42, ry: f.s * 0.6, fill: c, stroke: '#fff', 'stroke-width': .8, 'stroke-opacity': .7, transform: `rotate(${k * 90})` }));
+    $('gateForm').addEventListener('submit', e => {
+      e.preventDefault();
+      if (!pw.value.trim()) { K.restart(field, 'shake'); return; }
+      if (K.cyrb53(norm(pw.value)) === PASS_HASH) {
+        K.unlock();
+        pw.blur();
+        msg.textContent = '';
+        open();
+      } else {
+        wrong++;
+        field.classList.add('wrong');
+        K.restart(field, 'shake');
+        msg.textContent = wrong >= 3 ? 'psst... nas datum ♡' : nopes[(wrong - 1) % nopes.length];
+        pw.select();
       }
-      g.appendChild(el('circle', { r: f.s * 0.16, fill: '#fff7fb' }));
-      svg.appendChild(g);
     });
-    return svg;
+  } else {
+    showHome();
   }
-  document.querySelectorAll('[data-bloom]').forEach(n => n.appendChild(hydrangea(palettes[n.dataset.bloom])));
 
-  // Love notes
-  const notes = [
-    'Ti si moja srecica.',
-    'Kidas kineski',
-    'jedva cekam da te vidim',
-    'Najljepsi osmijeh ikad',
-    'imas dobre sise ',
-    'ti si moja hortenzijica'
-  ];
-  let ni = 0;
-  const note = document.getElementById('note');
-  document.getElementById('heart').addEventListener('click', e => {
-    e.stopPropagation();
-    ni = (ni + 1) % notes.length;
-    note.classList.add('swap');
-    setTimeout(() => { note.textContent = notes[ni]; note.classList.remove('swap'); }, reduce ? 0 : 250);
-    const r = e.currentTarget.getBoundingClientRect();
-    burst(r.left + r.width / 2, r.top + r.height / 2, 28);
-  });
-
-  // Reasons
-  const heartIcon = c => `<svg class="icon" viewBox="0 0 100 90"><path d="M50 86 C20 62 4 46 4 27 C4 13 15 4 28 4 C38 4 46 10 50 18 C54 10 62 4 72 4 C85 4 96 13 96 27 C96 46 80 62 50 86Z" fill="${c}"/></svg>`;
-  const starIcon = c => `<svg class="icon" viewBox="0 0 100 100"><path d="M50 4 L62 38 L98 38 L69 59 L80 94 L50 73 L20 94 L31 59 L2 38 L38 38Z" fill="${c}" stroke-linejoin="round"/></svg>`;
-  const reasons = [
-    [heartIcon('#ff8fbf'), 'Tvoj osmijeh', 'je jako lijep.'],
-    [starIcon('#ffa6cf'), 'Tvoj sjaj', 'Strasno je kolko si lijepa plasim se aaaa'],
-    [heartIcon('#e8559a'), 'Tvoja dobrota', 'je nenormalna'],
-    [starIcon('#ff7fb3'), 'Tvoji zagrljaji', 'kidaju'],
-    [heartIcon('#ffa6cf'), 'Tvoja sasavost', 'Pogotovo kad si pijana'],
-    [starIcon('#f7a8d8'), 'Samo ti', 'i nasih 13 djece (i jos 13 usvojenih 4 kineza 3 crnca)'],
-  ];
-  document.getElementById('reasons').innerHTML = reasons.map(([i, t, d]) => `<div class="reason">${i}<b>${t}</b><span>${d}</span></div>`).join('');
-
-  const cv = document.getElementById('sky'), ctx = cv.getContext('2d');
-  let W, H, dpr;
-  const resize = () => { dpr = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); };
-  resize(); addEventListener('resize', resize);
-  const colors = ['#ff8fbf', '#ffb3d4', '#e8559a', '#ff7fb3', '#ffd6e8', '#ffffff'];
-
-  const stars = Array.from({ length: 70 }, () => ({ x: Math.random(), y: Math.random(), r: rnd(1, 2.6), p: rnd(0, 6.28), sp: rnd(.6, 2), c: pick(['#ffffff', '#ffe3ef', '#ffd6ea']) }));
-  const floaters = Array.from({ length: 22 }, () => newFloater(true));
-  function newFloater(anywhere) {
-    return { x: rnd(0, W), y: anywhere ? rnd(0, H) : H + 30, s: rnd(8, 18), vy: rnd(.25, .7), sw: rnd(0, 6.28), kind: Math.random() < .6 ? 'heart' : 'star', c: pick(colors), a: rnd(.5, .9) };
+  function open() {
+    let next = null;
+    try { next = sessionStorage.getItem('irena-dalje'); sessionStorage.removeItem('irena-dalje'); } catch {}
+    root.classList.add('opening');
+    const { W, H } = K.size();
+    setTimeout(() => {
+      K.burst(W / 2, H / 2, 60);
+      K.setCalm(false);
+      for (let i = 1; i < 5; i++) setTimeout(() => K.burst(K.rnd(W * .15, W * .85), K.rnd(H * .2, H * .7), 24), i * 160);
+    }, 450);
+    if (next) { setTimeout(() => location.replace(next), 1100); return; }
+    showHome();
+    setTimeout(() => { root.classList.add('in'); root.classList.remove('opening'); }, 2200);
   }
-  let bits = [];
-  function burst(x, y, n = 18) {
-    for (let i = 0; i < n; i++) {
-      const a = rnd(0, Math.PI * 2), v = rnd(2, 7);
-      bits.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 2, s: rnd(7, 15), life: 1, kind: pick(['heart', 'star', 'star', 'heart', 'dot']), c: pick(colors), rot: rnd(0, 6.28) });
+
+  // ---------- home ----------
+  function showHome() {
+    K.setCalm(false);
+    document.title = 'Za Irenu ♡';
+    const now = Date.now();
+
+    // our day
+    const days = Math.round((K.midnight(now) - OUR_DAY.getTime()) / DAY);
+    if (days >= 0) {
+      $('sinceDays').textContent = fmtN(days);
+      $('sinceL').textContent = pl(days, 'dan', 'dana', 'dana');
+      const hours = Math.floor((now - OUR_DAY.getTime()) / 36e5);
+      // next round number: every 100 days, plus each full year
+      const nexts = [Math.ceil((days + 1) / 100) * 100];
+      for (let y = 1; y < 60; y++) { const d = new Date(OUR_DAY); d.setFullYear(d.getFullYear() + y); const n = Math.round((d - OUR_DAY) / DAY); if (n > days) { nexts.push(n); break; } }
+      const goal = Math.min(...nexts), left = goal - days;
+      const goalTxt = goal === nexts[1] ? `${Math.round(goal / 365)}. godisnjica` : `${goal}. dan`;
+      $('sinceChips').innerHTML =
+        `<span class="chip"><b>${fmtN(hours)}</b> sati</span>` +
+        `<span class="chip">${left === 1 ? 'sutra' : `za <b>${left}</b> ${pl(left, 'dan', 'dana', 'dana')}`}: ${goalTxt} ♡</span>`;
+      if (days === 0) $('sinceSub').textContent = 'danas je nas dan ♡';
+    } else {
+      $('sinceDays').textContent = fmtN(-days);
+      $('sinceL').textContent = pl(-days, 'dan', 'dana', 'dana');
+      $('sinceSub').textContent = 'do naseg dana ♡';
     }
-    if (reduce) draw(0);
-  }
-  addEventListener('pointerdown', e => burst(e.clientX, e.clientY));
 
-  function heart(x, y, s) {
-    ctx.beginPath();
-    ctx.moveTo(x, y + s * .35);
-    ctx.bezierCurveTo(x - s, y - s * .35, x - s * .45, y - s, x, y - s * .45);
-    ctx.bezierCurveTo(x + s * .45, y - s, x + s, y - s * .35, x, y + s * .35);
-    ctx.fill();
-  }
-  function star(x, y, s, rot = 0) {
-    ctx.beginPath();
-    for (let i = 0; i < 10; i++) {
-      const r = i % 2 ? s * .42 : s, a = rot + i * Math.PI / 5 - Math.PI / 2;
-      ctx.lineTo(x + Math.cos(a) * r, y + Math.sin(a) * r);
+    // next meeting teaser
+    K.meeting().then(st => {
+      const now = Date.now();
+      if (!st.t) return;
+      const diff = st.t - now;
+      if (diff > 0) {
+        const sl = K.sleepsUntil(st.t, now), d = Math.floor(diff / DAY);
+        $('teaserBig').innerHTML = sl === 0 ? 'danas!!!' : sl === 1 ? 'sutra!!!' : `jos <b>${d}</b> ${pl(d, 'dan', 'dana', 'dana')}`;
+        $('teaserWhen').textContent = K.fmtDate(st.t) + (st.p ? ' · ' + st.p : '');
+      } else if (-diff < DAY) {
+        $('teaserBig').textContent = 'danas!!!';
+        $('teaserWhen').textContent = 'danas se vidimo ♡';
+      }
+    });
+
+    // photo of the day
+    const photos = K.photos();
+    if (photos.length) {
+      const p = photos[Math.floor(K.midnight(now) / DAY) % photos.length];
+      $('memoryImg').src = p.t;
+      $('memoryImg').alt = p.caption || 'nasa slika';
+      $('memoryCap').textContent = p.caption || 'mi ♡';
+      $('memoryDate').textContent = p.date ? K.fmtDay(p.date) : '';
+      $('memoryLink').href = 'slike.html#foto=' + encodeURIComponent(p.id);
+      $('memory').hidden = false;
+      $('doorPhotos').textContent = `${photos.length} ${pl(photos.length, 'uspomena', 'uspomene', 'uspomena')}, i jos milion ce ih biti`;
     }
-    ctx.closePath(); ctx.fill();
   }
-  function shape(kind, x, y, s, rot) {
-    if (kind === 'heart') heart(x, y, s); else if (kind === 'star') star(x, y, s * .8, rot); else { ctx.beginPath(); ctx.arc(x, y, s * .25, 0, 7); ctx.fill(); }
-  }
-
-  function draw(t) {
-    ctx.clearRect(0, 0, W, H);
-    stars.forEach(s => {
-      ctx.globalAlpha = .45 + .55 * Math.abs(Math.sin(s.p + t * .001 * s.sp));
-      ctx.fillStyle = s.c;
-      star(s.x * W, s.y * H, s.r * 2.2);
-    });
-    floaters.forEach((f, i) => {
-      if (!reduce) { f.y -= f.vy; f.sw += .02; }
-      if (f.y < -30) floaters[i] = newFloater(false);
-      ctx.globalAlpha = f.a; ctx.fillStyle = f.c;
-      shape(f.kind, f.x + Math.sin(f.sw) * 14, f.y, f.s, f.sw * .3);
-    });
-    bits = bits.filter(b => b.life > 0);
-    bits.forEach(b => {
-      b.x += b.vx; b.y += b.vy; b.vy += .15; b.vx *= .98; b.life -= reduce ? 1 : .016; b.rot += .1;
-      ctx.globalAlpha = Math.max(b.life, 0); ctx.fillStyle = b.c;
-      shape(b.kind, b.x, b.y, b.s, b.rot);
-    });
-    ctx.globalAlpha = 1;
-    if (!reduce) requestAnimationFrame(draw);
-  }
-  requestAnimationFrame(draw);
 })();
 </script>
+</body>
+</html>
