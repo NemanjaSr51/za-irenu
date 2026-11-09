@@ -1,0 +1,286 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Za Irenu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Fredoka:wght@400;500;600&display=swap">
+<style>
+  /* Layout: a dreamy single column floating over a starry pink sky, hydrangea bouquets blooming at the corners */
+  :root {
+    --sky-top: #fde6f1;
+    --sky-bottom: #ffd3e6;
+    --ink: #7a2f58;
+    --ink-soft: #a85c86;
+    --rose: #ff7fb3;
+    --blush: #ffa6cf;
+    --deep: #e8559a;
+    --card: rgba(255, 255, 255, 0.62);
+    --display: "Great Vibes", "Brush Script MT", cursive;
+    --body: "Fredoka", "Trebuchet MS", system-ui, sans-serif;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; }
+  html { min-height: 100%; }
+  body {
+    min-height: 100%;
+    background: linear-gradient(180deg, var(--sky-top), var(--sky-bottom)) fixed, var(--sky-top);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 17px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  #sky { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+  .corner { position: fixed; width: min(42vw, 300px); pointer-events: none; z-index: 1; opacity: .95; }
+  .corner svg { width: 100%; height: auto; display: block; animation: sway 7s ease-in-out infinite; transform-origin: 50% 100%; }
+  .corner.bl { left: -40px; bottom: -40px; }
+  .corner.br { right: -40px; bottom: -40px; }
+  .corner.br svg { animation-delay: -3.5s; }
+  .corner.tr { right: -60px; top: -60px; width: min(32vw, 220px); }
+  .corner.tr svg { transform-origin: 50% 0; animation-delay: -1.7s; }
+  @keyframes sway { 0%, 100% { transform: rotate(-2.5deg); } 50% { transform: rotate(2.5deg); } }
+
+  main {
+    position: relative; z-index: 2;
+    max-width: 720px; margin: 0 auto;
+    padding-inline: 16px; padding-block: 56px 160px;
+    display: flex; flex-direction: column; gap: 56px;
+  }
+  .hero { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .eyebrow { font-weight: 500; letter-spacing: .14em; text-transform: uppercase; font-size: 13px; color: var(--ink-soft); }
+  h1 {
+    font-family: var(--display); font-weight: 400;
+    font-size: clamp(64px, 16vw, 132px); line-height: 1.05; margin: 0;
+    background: linear-gradient(90deg, var(--rose), var(--blush), var(--deep), var(--rose));
+    background-size: 300% 100%;
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: shimmer 8s linear infinite;
+    filter: drop-shadow(0 4px 14px rgba(255, 127, 179, .35));
+    text-wrap: balance;
+  }
+  @keyframes shimmer { to { background-position: 300% 0; } }
+  .sub { font-size: 20px; color: var(--ink-soft); margin: 0; max-width: 32ch; text-wrap: balance; }
+  .hero-bloom { width: min(260px, 70vw); margin-top: 8px; animation: bob 5s ease-in-out infinite; }
+  @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+  h2 { font-family: var(--display); font-weight: 400; font-size: clamp(44px, 10vw, 60px); line-height: 1.1; margin: 0; text-align: center; color: var(--rose); text-wrap: balance; }
+
+  .love {
+    background: var(--card); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, .9); border-radius: 32px;
+    box-shadow: 0 18px 50px -20px rgba(232, 85, 154, .55);
+    padding: 32px 24px; text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 18px;
+  }
+  .heart-btn {
+    border: 0; background: none; cursor: pointer; padding: 0;
+    width: 120px; height: 110px; animation: beat 1.4s ease-in-out infinite;
+    border-radius: 24px;
+  }
+  .heart-btn:focus-visible { outline: 3px dashed var(--deep); outline-offset: 6px; }
+  .heart-btn svg { width: 100%; height: 100%; filter: drop-shadow(0 8px 16px rgba(255, 127, 179, .5)); }
+  @keyframes beat { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.12); } 30% { transform: scale(.97); } 45% { transform: scale(1.08); } }
+  .note { font-size: 22px; font-weight: 500; min-height: 3.2em; max-width: 30ch; margin: 0; text-wrap: balance; transition: opacity .3s, transform .3s; }
+  .note.swap { opacity: 0; transform: translateY(6px) scale(.98); }
+  .hint { font-size: 14px; color: var(--ink-soft); margin: 0; }
+
+  .reasons { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+  .reason {
+    background: var(--card); border-radius: 24px; padding: 20px;
+    border: 2px solid rgba(255, 255, 255, .9);
+    display: flex; flex-direction: column; gap: 6px; min-width: 0;
+    transition: transform .25s;
+  }
+  .reason:hover { transform: translateY(-4px) rotate(-1deg); }
+  .reason .icon { width: 34px; height: 34px; }
+  .reason b { font-weight: 600; font-size: 18px; }
+  .reason span { color: var(--ink-soft); }
+
+  .flower-fact { text-align: center; max-width: 52ch; margin: 0 auto; color: var(--ink-soft); }
+  .flower-fact b { color: var(--ink); font-weight: 600; }
+
+  footer { text-align: center; }
+  footer small { color: var(--ink-soft); font-size: 14px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+
+<canvas id="sky" aria-hidden="true"></canvas>
+<div class="corner bl" aria-hidden="true" data-bloom="pink"></div>
+<div class="corner br" aria-hidden="true" data-bloom="deep"></div>
+<div class="corner tr" aria-hidden="true" data-bloom="light"></div>
+
+<main>
+  <section class="hero">
+    <span class="eyebrow">✧ mali sajt samo za ✧</span>
+    <h1>Irenu Knezevic</h1>
+    <p class="sub">najljepsa cura na svijetu</p>
+    <div class="hero-bloom" aria-hidden="true" data-bloom="mix"></div>
+  </section>
+
+  <section class="love" aria-live="polite">
+    <h2>Pritisni srce</h2>
+    <button class="heart-btn" id="heart" aria-label="Prikazi poruku">
+      <svg viewBox="0 0 100 90"><defs><linearGradient id="hg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffa6cf"/><stop offset="1" stop-color="#ff5c9e"/></linearGradient></defs>
+        <path d="M50 86 C20 62 4 46 4 27 C4 13 15 4 28 4 C38 4 46 10 50 18 C54 10 62 4 72 4 C85 4 96 13 96 27 C96 46 80 62 50 86Z" fill="url(#hg)"/>
+        <ellipse cx="28" cy="22" rx="9" ry="6" fill="#fff" opacity=".55" transform="rotate(-30 28 22)"/></svg>
+    </button>
+    <p class="note" id="note">Ti si moja srecica.</p>
+    <p class="hint"> ♡</p>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:24px">
+    <h2>Zasto si mi omiljena</h2>
+    <div class="reasons" id="reasons"></div>
+  </section>
+
+  <p class="flower-fact">Hortenzije su svudje jer si ti moja <b>hortenzijica</b></p>
+
+  <footer>
+    <small>pritisni bilo gdje za zvjezdice i srca ti si moje srce malo</small>
+  </footer>
+</main>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const NS = 'http://www.w3.org/2000/svg';
+  const palettes = {
+    pink:  ['#ffb3d4', '#ff9cc7', '#ffc8e0', '#f7a8d8', '#ffd6e8'],
+    deep:  ['#ff7fb3', '#f56aa6', '#ff94c2', '#e8559a', '#ffa6cf'],
+    light: ['#ffd6e8', '#ffe3ef', '#ffc8e0', '#fbd0e6', '#ffe9f3'],
+  };
+  palettes.mix = [...palettes.pink, ...palettes.deep, ...palettes.light];
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+  const el = (tag, attrs) => { const n = document.createElementNS(NS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); return n; };
+
+  // A hydrangea: leaves, then a dome of tiny four-petal florets, back ones darker
+  function hydrangea(colors) {
+    const svg = el('svg', { viewBox: '0 0 200 200' });
+    [[-50, 60], [40, 70], [-10, 85]].forEach(([dx, rot]) => {
+      svg.appendChild(el('path', {
+        d: 'M0 0 C18 -22 52 -22 70 0 C52 22 18 22 0 0Z',
+        fill: '#9fd6a8', stroke: '#7cc08a', 'stroke-width': 1.5,
+        transform: `translate(${100 + dx * 0.4} 140) rotate(${dx < 0 ? 180 - rot / 2 : rot / 2})`
+      }));
+    });
+    const florets = [];
+    for (let i = 0; i < 70; i++) {
+      const a = Math.random() * Math.PI * 2, r = Math.sqrt(Math.random()) * 62;
+      florets.push({ x: 100 + Math.cos(a) * r, y: 92 + Math.sin(a) * r * 0.85, s: rnd(9, 13), rot: rnd(0, 90) });
+    }
+    florets.sort((p, q) => p.y - q.y);
+    florets.forEach(f => {
+      const g = el('g', { transform: `translate(${f.x} ${f.y}) rotate(${f.rot})` });
+      const c = pick(colors);
+      for (let k = 0; k < 4; k++) {
+        g.appendChild(el('ellipse', { cx: 0, cy: -f.s * 0.55, rx: f.s * 0.42, ry: f.s * 0.6, fill: c, stroke: '#fff', 'stroke-width': .8, 'stroke-opacity': .7, transform: `rotate(${k * 90})` }));
+      }
+      g.appendChild(el('circle', { r: f.s * 0.16, fill: '#fff7fb' }));
+      svg.appendChild(g);
+    });
+    return svg;
+  }
+  document.querySelectorAll('[data-bloom]').forEach(n => n.appendChild(hydrangea(palettes[n.dataset.bloom])));
+
+  // Love notes
+  const notes = [
+    'Ti si moja srecica.',
+    'Kidas kineski',
+    'jedva cekam da te vidim',
+    'Najljepsi osmijeh ikad',
+    'imas dobre sise ',
+    'ti si moja hortenzijica'
+  ];
+  let ni = 0;
+  const note = document.getElementById('note');
+  document.getElementById('heart').addEventListener('click', e => {
+    e.stopPropagation();
+    ni = (ni + 1) % notes.length;
+    note.classList.add('swap');
+    setTimeout(() => { note.textContent = notes[ni]; note.classList.remove('swap'); }, reduce ? 0 : 250);
+    const r = e.currentTarget.getBoundingClientRect();
+    burst(r.left + r.width / 2, r.top + r.height / 2, 28);
+  });
+
+  // Reasons
+  const heartIcon = c => `<svg class="icon" viewBox="0 0 100 90"><path d="M50 86 C20 62 4 46 4 27 C4 13 15 4 28 4 C38 4 46 10 50 18 C54 10 62 4 72 4 C85 4 96 13 96 27 C96 46 80 62 50 86Z" fill="${c}"/></svg>`;
+  const starIcon = c => `<svg class="icon" viewBox="0 0 100 100"><path d="M50 4 L62 38 L98 38 L69 59 L80 94 L50 73 L20 94 L31 59 L2 38 L38 38Z" fill="${c}" stroke-linejoin="round"/></svg>`;
+  const reasons = [
+    [heartIcon('#ff8fbf'), 'Tvoj osmijeh', 'je jako lijep.'],
+    [starIcon('#ffa6cf'), 'Tvoj sjaj', 'Strasno je kolko si lijepa plasim se aaaa'],
+    [heartIcon('#e8559a'), 'Tvoja dobrota', 'je nenormalna'],
+    [starIcon('#ff7fb3'), 'Tvoji zagrljaji', 'kidaju'],
+    [heartIcon('#ffa6cf'), 'Tvoja sasavost', 'Pogotovo kad si pijana'],
+    [starIcon('#f7a8d8'), 'Samo ti', 'i nasih 13 djece (i jos 13 usvojenih 4 kineza 3 crnca)'],
+  ];
+  document.getElementById('reasons').innerHTML = reasons.map(([i, t, d]) => `<div class="reason">${i}<b>${t}</b><span>${d}</span></div>`).join('');
+
+  const cv = document.getElementById('sky'), ctx = cv.getContext('2d');
+  let W, H, dpr;
+  const resize = () => { dpr = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); };
+  resize(); addEventListener('resize', resize);
+  const colors = ['#ff8fbf', '#ffb3d4', '#e8559a', '#ff7fb3', '#ffd6e8', '#ffffff'];
+
+  const stars = Array.from({ length: 70 }, () => ({ x: Math.random(), y: Math.random(), r: rnd(1, 2.6), p: rnd(0, 6.28), sp: rnd(.6, 2), c: pick(['#ffffff', '#ffe3ef', '#ffd6ea']) }));
+  const floaters = Array.from({ length: 22 }, () => newFloater(true));
+  function newFloater(anywhere) {
+    return { x: rnd(0, W), y: anywhere ? rnd(0, H) : H + 30, s: rnd(8, 18), vy: rnd(.25, .7), sw: rnd(0, 6.28), kind: Math.random() < .6 ? 'heart' : 'star', c: pick(colors), a: rnd(.5, .9) };
+  }
+  let bits = [];
+  function burst(x, y, n = 18) {
+    for (let i = 0; i < n; i++) {
+      const a = rnd(0, Math.PI * 2), v = rnd(2, 7);
+      bits.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 2, s: rnd(7, 15), life: 1, kind: pick(['heart', 'star', 'star', 'heart', 'dot']), c: pick(colors), rot: rnd(0, 6.28) });
+    }
+    if (reduce) draw(0);
+  }
+  addEventListener('pointerdown', e => burst(e.clientX, e.clientY));
+
+  function heart(x, y, s) {
+    ctx.beginPath();
+    ctx.moveTo(x, y + s * .35);
+    ctx.bezierCurveTo(x - s, y - s * .35, x - s * .45, y - s, x, y - s * .45);
+    ctx.bezierCurveTo(x + s * .45, y - s, x + s, y - s * .35, x, y + s * .35);
+    ctx.fill();
+  }
+  function star(x, y, s, rot = 0) {
+    ctx.beginPath();
+    for (let i = 0; i < 10; i++) {
+      const r = i % 2 ? s * .42 : s, a = rot + i * Math.PI / 5 - Math.PI / 2;
+      ctx.lineTo(x + Math.cos(a) * r, y + Math.sin(a) * r);
+    }
+    ctx.closePath(); ctx.fill();
+  }
+  function shape(kind, x, y, s, rot) {
+    if (kind === 'heart') heart(x, y, s); else if (kind === 'star') star(x, y, s * .8, rot); else { ctx.beginPath(); ctx.arc(x, y, s * .25, 0, 7); ctx.fill(); }
+  }
+
+  function draw(t) {
+    ctx.clearRect(0, 0, W, H);
+    stars.forEach(s => {
+      ctx.globalAlpha = .45 + .55 * Math.abs(Math.sin(s.p + t * .001 * s.sp));
+      ctx.fillStyle = s.c;
+      star(s.x * W, s.y * H, s.r * 2.2);
+    });
+    floaters.forEach((f, i) => {
+      if (!reduce) { f.y -= f.vy; f.sw += .02; }
+      if (f.y < -30) floaters[i] = newFloater(false);
+      ctx.globalAlpha = f.a; ctx.fillStyle = f.c;
+      shape(f.kind, f.x + Math.sin(f.sw) * 14, f.y, f.s, f.sw * .3);
+    });
+    bits = bits.filter(b => b.life > 0);
+    bits.forEach(b => {
+      b.x += b.vx; b.y += b.vy; b.vy += .15; b.vx *= .98; b.life -= reduce ? 1 : .016; b.rot += .1;
+      ctx.globalAlpha = Math.max(b.life, 0); ctx.fillStyle = b.c;
+      shape(b.kind, b.x, b.y, b.s, b.rot);
+    });
+    ctx.globalAlpha = 1;
+    if (!reduce) requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+</script>
