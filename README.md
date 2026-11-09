@@ -23,14 +23,18 @@ Newest photos come first; the date is read from the filename (`WhatsApp Image 20
 
 iPhone HEIC photos are not supported; export them as JPG first.
 
-Captions are optional. Put them in `slike/opisi.json`, keyed by filename:
+To fix a photo's date or add a caption, edit `slike/opisi.json` (keyed by filename):
 
 ```json
 {
-  "5.jpeg": "nasa voznja",
-  "WhatsApp Image 2026-11-08 at 10.17.43.jpeg": "ti i ja ♡"
+  "5.jpeg": { "datum": "16.8.2026", "opis": "nasa voznja" },
+  "6.jpeg": { "datum": "" }
 }
 ```
+
+- `datum`: `16.8.2026` or `2026-08-16`; `""` hides the date; leave it out to use the automatic one.
+- `opis`: the caption under the photo (optional).
+- Photos are sorted by these dates, newest first.
 
 ## Setting the next meeting
 

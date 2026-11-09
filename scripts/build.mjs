@@ -43,8 +43,28 @@ function dateFromExif(buf) {
   } catch {}
   return '';
 }
+// opisi.json entry for a photo: either "caption" or { "opis": "caption", "datum": "16.8.2026" }.
+const entryFor = file => {
+  if (!Object.hasOwn(captions, file)) return {};
+  const e = captions[file];
+  return typeof e === 'object' && e !== null ? e : { opis: e };
+};
+// "16.8.2026", "16. 08. 2026.", "16/8/2026", "2026-08-16" -> "2026-08-16T12:00:00"; "" -> no date shown; undefined -> automatic
+function dateFromEntry(file) {
+  const e = entryFor(file);
+  if (!Object.hasOwn(e, 'datum')) return undefined;
+  const s = String(e.datum ?? '').trim();
+  if (!s) return '';
+  let m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+  if (m) return `${m[1]}-${pad(m[2])}-${pad(m[3])}T12:00:00`;
+  m = s.replace(/\s+/g, '').match(/^(\d{1,2})[./-](\d{1,2})[./-](\d{4})\.?$/);
+  if (m && +m[2] >= 1 && +m[2] <= 12 && +m[1] >= 1 && +m[1] <= 31) return `${m[3]}-${pad(m[2])}-${pad(m[1])}T12:00:00`;
+  console.warn(`  ! ne razumijem datum "${s}" za ${file}, koristim automatski`);
+  return undefined;
+}
 function captionFor(file) {
-  if (Object.hasOwn(captions, file)) return String(captions[file] || '');
+  const e = entryFor(file);
+  if (Object.hasOwn(e, 'opis')) return String(e.opis || '');
   const base = file.replace(/\.[^.]+$/, '');
   if (GENERIC.test(base)) return '';
   return base.replace(/(20\d\d)[-_.]?\d\d[-_.]?\d\d([-_ .]*(at)?[-_ .]*\d\d[-_.:]?\d\d([-_.:]?\d\d)?)?/i, '').replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim();
@@ -98,7 +118,7 @@ for (const file of files) {
       id,
       t: `slike/t/${id}.webp`, tw: thumb.width, th: thumb.height,
       v: `slike/v/${id}.webp`, vw: view.width, vh: view.height,
-      date: dateFromName(file) || (meta.exif ? dateFromExif(meta.exif) : ''),
+      date: dateFromEntry(file) ?? (dateFromName(file) || (meta.exif ? dateFromExif(meta.exif) : '')),
       caption: captionFor(file),
       file,
     });
